@@ -7,6 +7,8 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
+#include "version.h"
+
 using namespace boost;
 
 /// \brief  Main function
@@ -44,7 +46,8 @@ int main(int argc, char** argv)
     for (int i = 0; i < num_edges; ++i)
       add_edge(edge_array[i].first, edge_array[i].second, g);
     
-    std::cout << "Hello Boost!" << std::endl;
+    std::cout << "Hello Boost!, " << VERSION << std::endl;
+    std::cout << GIT_DETAILS << std::endl;
 
     return 0;
 }

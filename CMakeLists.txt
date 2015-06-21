@@ -31,10 +31,23 @@ project(GenealogicalTree CXX)
 message(STATUS "CMAKE_CXX_COMPILER = ${CMAKE_CXX_COMPILER}")
 
 # Useful commands 
+set(INVOKE_CMAKE_SCRIPT ${CMAKE_COMMAND} -P) 
 set(COPY_DIFF ${CMAKE_COMMAND} -E copy_if_different) 
 set(REMOVE_DIR ${CMAKE_COMMAND} -E remove_directory)
 set(REMOVE ${CMAKE_COMMAND} -E remove -f)
 set(ENV_CMD ${CMAKE_COMMAND} -E env ${EXTRA_ARG})
+
+#### Git Info ####
+add_subdirectory(${PROJECT_SOURCE_DIR}/template)
+# clean & regenerate git commit hash
+add_custom_target(clean_git_commit_hash ${REMOVE} ${PROJECT_SOURCE_DIR}/Doxyfile
+  COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/src/version.h
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
+)
+add_custom_target(git_commit_hash ${INVOKE_CMAKE_SCRIPT} ${PROJECT_SOURCE_DIR}/template/CMakeLists.txt
+  DEPENDS clean_git_commit_hash 
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
+)
 
 ############# DOCUMENTATION ##############
 
@@ -115,14 +128,13 @@ if(DOXYGEN_FOUND)
 
  endif()
 
-
  # make doc
  add_custom_target( doc ${PLANTUML} README.md src/ test/
    COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_SOURCE_DIR}/Doxyfile
-   COMMAND echo ${CURRENT_PATH}
    COMMAND ${ENV_CMD} ${CMAKE_BUILD_TOOL} -f ${PROJECT_SOURCE_DIR}/latex/Makefile -C ${PROJECT_SOURCE_DIR}/latex
    COMMAND ${COPY_DIFF} ${PROJECT_SOURCE_DIR}/latex/refman.pdf ${PDF_FILE}
    COMMAND ${REMOVE_DIR} ${PROJECT_SOURCE_DIR}/latex
+   DEPENDS git_commit_hash 
    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
  )
  
@@ -146,7 +158,8 @@ if(Boost_FOUND)
 
   # make
   include_directories(${Boost_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/src)
-  add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
+  add_executable(${CMAKE_PROJECT_NAME} src/main.cpp src/version.h)
+  add_dependencies(${CMAKE_PROJECT_NAME} git_commit_hash)
   #target_link_libraries(${CMAKE_PROJECT_NAME} ${Boost_LIBRARIES})
 
   # make install

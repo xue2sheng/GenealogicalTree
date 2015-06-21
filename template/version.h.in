@@ -1,0 +1,37 @@
+#ifndef VERSION_H
+#define	VERSION_H
+
+/* Human friendly version numbers */ 
+#define DEFINE_VERSION_FIRST  "0"
+#define DEFINE_VERSION_MIDDLE "0"
+#define DEFINE_VERSION_LAST   "1" 
+
+/* Git info collected by CMake */ 
+/* git log --oneline --decorate -1 */
+#define DEFINE_GIT_DETAILS     "@CMAKE_GIT_DETAILS@"
+/* git log -1 --format=%h */
+#define DEFINE_GIT_COMMIT_HASH "@CMAKE_GIT_COMMIT_HASH@"
+
+/* Version */
+#define DEFINE_VERSION DEFINE_VERSION_FIRST "." \
+        DEFINE_VERSION_MIDDLE "." DEFINE_VERSION_LAST \
+	"_" DEFINE_GIT_COMMIT_HASH
+
+/** This metadata information might be located through command: 
+ * 
+ * Linux/Solaris/Mac:  strings <binary> | grep METADATA
+ * Windows (MinGW):    strings <binary> | findstr METADATA 
+ * 
+ */
+                         
+/* Avoid GNU Compiler to optimize out */
+#if _GNUC_
+static const char* VERSION __attribute__((used)) __attribute__((nocommon)) = "VERSION = " DEFINE_VERSION;  
+static const char* GIT_DETAILS __attribute__((used)) __attribute__((nocommon)) = "GIT_DETAILS = " DEFINE_GIT_DETAILS;  
+#else
+static const char* VERSION = "VERSION = " DEFINE_VERSION;
+static const char* GIT_DETAILS = "GIT_DETAILS = " DEFINE_GIT_DETAILS;  
+#endif
+
+#endif	/* VERSION_H */
+

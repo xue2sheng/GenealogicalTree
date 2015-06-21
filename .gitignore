@@ -1,11 +1,18 @@
 ## project ##
 build/
 latex/
+bin/
 *.log
 *~
 .DS*
 nbproject/
 .metadata/
+
+# version.h should be created by cmake with git info
+src/version.h
+
+# Doxyfile should be created by cmake with git info
+Doxyfile
 
 # Compiled Object files
 *.slo
