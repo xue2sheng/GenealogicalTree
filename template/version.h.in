@@ -1,6 +1,19 @@
 #ifndef VERSION_H
 #define	VERSION_H
 
+/// \file  version.h
+/// This metadata information might be located through command 'strings'
+///
+/// Just the version:
+///  Linux/Solaris/Mac:  strings <binary> | grep VERSION 
+///  Windows (MinGW):    strings <binary> | findstr VERSION 
+///
+/// Details like GIT branch or commit comments:
+///  Linux/Solaris/Mac:  strings <binary> | grep GIT_DETAILS 
+///  Windows (MinGW):    strings <binary> | findstr GIT_DETAILS 
+///
+
+
 /* Human friendly version numbers */ 
 #define DEFINE_VERSION_FIRST  "0"
 #define DEFINE_VERSION_MIDDLE "0"
@@ -17,13 +30,7 @@
         DEFINE_VERSION_MIDDLE "." DEFINE_VERSION_LAST \
 	"_" DEFINE_GIT_COMMIT_HASH
 
-/** This metadata information might be located through command: 
- * 
- * Linux/Solaris/Mac:  strings <binary> | grep METADATA
- * Windows (MinGW):    strings <binary> | findstr METADATA 
- * 
- */
-                         
+
 /* Avoid GNU Compiler to optimize out */
 #if _GNUC_
 static const char* VERSION __attribute__((used)) __attribute__((nocommon)) = "VERSION = " DEFINE_VERSION;  
