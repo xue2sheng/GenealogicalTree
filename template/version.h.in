@@ -2,17 +2,27 @@
 #define	VERSION_H
 
 /// \file  version.h
-/// This metadata information might be located through command 'strings'
+/// This metadata information might be located through **strings** command
 ///
-/// Just the version:
-///  Linux/Solaris/Mac:  strings <binary> | grep VERSION 
-///  Windows (MinGW):    strings <binary> | findstr VERSION 
+///  * Linux/Solaris/Mac:  
 ///
-/// Details like GIT branch or commit comments:
-///  Linux/Solaris/Mac:  strings <binary> | grep GIT_DETAILS 
-///  Windows (MinGW):    strings <binary> | findstr GIT_DETAILS 
+///           strings <binary> | grep VERSION 
+///           strings <binary> | grep GIT_DETAILS 
 ///
-
+///  * Windows (MinGW):
+///
+///           strings <binary> | findstr VERSION 
+///           strings <binary> | findstr GIT_DETAILS 
+///
+/// @startuml ../image/version.png
+/// hide footbox
+/// "git\ncommit" -> "git\nlog": create git commit hash 
+/// "git\nlog" --> "make\ngit_commit_hash": read git commit_hash
+/// "make\ngit_commit_hash" --> "generated\nDoxyfile": add hash to PROJECT_NUMBER 
+/// "make\ngit_commit_hash" --> "generated\nversion.h": add hash to VERSION & GIT_DETAILS 
+/// @enduml
+/// \image latex version.png width=300px
+///
 
 /* Human friendly version numbers */ 
 #define DEFINE_VERSION_FIRST  "0"

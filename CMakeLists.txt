@@ -45,7 +45,7 @@ add_custom_target(clean_git_commit_hash ${REMOVE} ${PROJECT_SOURCE_DIR}/Doxyfile
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
 )
 add_custom_target(git_commit_hash ${INVOKE_CMAKE_SCRIPT} ${PROJECT_SOURCE_DIR}/template/CMakeLists.txt
-  #DEPENDS clean_git_commit_hash 
+  DEPENDS clean_git_commit_hash 
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
 )
 
