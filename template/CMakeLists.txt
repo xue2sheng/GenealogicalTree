@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.1)
 
 # Useful commands 
 set(INVOKE_CMAKE_SCRIPT ${CMAKE_COMMAND} -P) 

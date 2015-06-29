@@ -15,12 +15,37 @@ Program should be able to **find all the descendant with name Bob for all the as
 
 Usual commands:
 
-          mkdir -p build
+          mkdir build
           cd build
           cmake ..
           make
           make install
           make doc
+
+![\image latex image/cmake.png width=300px](image/cmake.png)
+
+<!---
+@startuml image/cmake.png
+left to right direction
+(version.h) <|-- (template\nCMakeLists.txt)   
+(Doxyfile) <|-- (template\nCMakeLists.txt) : generate  
+(template\nCMakeLists.txt) <.. (version.h.in) 
+(template\nCMakeLists.txt) <.. (Doxyfile.in) : template 
+(root\nCMakeLists.txt) <-- (version.h) 
+(root\nCMakeLists.txt) <-- (Doxyfile) : Git\nCommit\nHash
+(Doxyfile) <.. (root\nREADME.md) : include
+note left of (root\nCMakeLists.txt): **binaries**\nmake\nmake install
+note left of (root\nCMakeLists.txt): **documents**\nmake doc\nmake show 
+@enduml
+--->
+
+**Note:** If you happen to work with *OSX* and [Homebrew](http://brew.sh), don't forget to invoke *cmake* pointing to the **GNU** compiler:
+
+          cmake -DCMAKE_CXX_COMPILER=g++-5 ..
+
+**Note:** If you happen to work with *Windows* and [Git](https://git-scm.com/download/win)/[MinGW](http://nuwen.net/mingw.html), don't forget to invoke *cmake* pointing to the **GNU** generator:
+
+          cmake -G "MSYS Makefiles" ..
 
 ## Development details
 
@@ -28,13 +53,13 @@ In order to generate binaries & documentation, the following versions were used:
 
 ### For code
 
-#### *Linux*
+#### *Linux* ( Xubuntu 15.04 )
 
-- **cmake** *2.8.11*
-- **gcc** *4.8.3*
-- **boost** *1.53.0*
+- **cmake** *3.1.3*
+- **gcc** *4.9.2*
+- **boost** *1.55*
 
-#### *OSX*
+#### *OSX* ( Yosemite 10.10.3 )
 
 - **cmake** *3.2.2*
 - **gcc** *5.1*
@@ -45,98 +70,48 @@ In order to generate binaries & documentation, the following versions were used:
           brew install gcc
           brew install boost --cc=gcc-5
          
+#### *Windows* ( Win7 x64 )
+
+ - **cmake** *3.3.0*
+ - **gcc** *5.1*
+ - **boost** *1.58*
 
 ### For documentation
 
 #### *Linux*
 
-- **doxygen** *1.8.5*
-- **latex/pdfTeX** *3.1415926-2.5-1.40.14*
-- **graphviz/dot** *2.30.1*
-- **java/plantuml** *1.7.0_79/8026*
+- **doxygen** *1.8.9.1*
+- **latex/pdfTeX** *2.6-1.40.15*
+- **graphviz/dot** *2.38.0*
+- **java/plantuml** *1.8.0_45/8026*
 
 #### *OSX*
 
 - **doxygen** *1.8.9.1*
-- **latex/pdfTeX** *3.14159265-2.6-1.40.15*
+- **latex/pdfTeX** *2.6-1.40.15*
 - **graphviz/dot** *2.38.0*
 - **java/plantuml** *1.8.0_40/8026*
 
+#### *Windows*
+
+ - **doxygen** *1.8.9.1*
+ - **latex/pdfTeX** *2.9.5496-1.40.15*
+ - **graphviz/dot** *2.38.0*
+ - **java/plantuml** *1.8.0_45/8026*
+
 **Note:** Don't forget configure *Doxyfile* and *CMakeLists.txt* to use **README.md** as *Main Page* for **latex** documentation. 
 
-As well generating images out of comments and including them into *markdown* and *latex* formats require some extra details:
-
-![\image latex image/example.png width=140px](image/example.png)
-
-<!--- 
-@startuml image/example.png
-  Will -> (offspring)
-  (offspring) -> Bob
-@enduml
---->
-
-- **README.md** *(see source code)*
-
-         ![](image/example.png)<font color="white">\image latex image/example.png width=140px</font>
-
-         HTML Commented PlantUML code for image/example.png
-
-
-- **Doxyfile**
-
-         USE_MDFILE_AS_MAINPAGE = README.md "Genealogical Tree"
-         INPUT                  = . src test
-         IMAGE_PATH             = image
-         INPUT_FILTER           = "sed 's/^\!\[\(.*\)\](.*)$/\1/g'"
-         LATEX_OUTPUT           = doc/latex
-         PLANTUML_JAR_PATH      = 
-         PLANTUML_INCLUDE_PATH  = 
-         
-- **CMakeLists.txt**
-
-         set(PLANTUML java -jar /opt/plantuml/plantuml.jar)
-         set(PDF_FILE ${PROJECT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}.pdf)
-
-         # make doc
-         add_custom_target( doc mkdir -p ${PROJECT_SOURCE_DIR}/doc 
-          COMMAND ${PLANTUML} ${PROJECT_SOURCE_DIR}/README.md
-          COMMAND ${PLANTUML} ${PROJECT_SOURCE_DIR}/src
-          COMMAND ${PLANTUML} ${PROJECT_SOURCE_DIR}/test
-          COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_SOURCE_DIR}/Doxyfile
-          COMMAND rm -rf ${PDF_FILE} 
-          COMMAND make -f ${PROJECT_SOURCE_DIR}/doc/latex/Makefile -C ${PROJECT_SOURCE_DIR}/doc/latex
-          COMMAND mv ${PROJECT_SOURCE_DIR}/doc/latex/refman.pdf ${PDF_FILE}
-          COMMAND rm -rf ${PROJECT_SOURCE_DIR}/doc
-          WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-         
-**Note:** Take into account that *Doxygen PlantUML* task was deactivated at **Doxyfile** and activated just at **CMakeLists.txt** in order to let us to save generated *images* and include them choosing their **size**.
- 
 ### For IDE 
 
-To use **NetBeans** don't forget to configure a *cmake* project with *custom* **build** folder. *PlantUML* and *markdown* plugins might be handy as well.
+To use **NetBeans** don't forget to configure a *cmake* project with *custom* **build** folder. Add at that moment any extra customization in the command line used by *cmake* instruction. For example:
 
-**Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use **-lc** instead of just **-c** for its */bin/bash* flag. Define a target to show the *PDF* generated with the latest documentation information:
+ - -DCMAKE_CXX_COMPILER=g++-5 for **OSX**
+ - -G "MSYS Makefiles" for **Windows**
 
-- **CMakeLists.txt**
+**Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use **-lc** instead of just **-c** for its */bin/bash* flag. 
 
-         # make show
-         if(APPLE)
-           add_custom_target( show open -a Preview ${PDF_FILE} DEPENDS doc )
-         elseif(UNIX)
-           add_custom_target( show evince ${PDF_FILE} DEPENDS doc )
-         endif()
+## GIT Commit Hash
 
-- **jVi**
+In order to add the specific **git commit hash** into code & documentation, *templates* are defined in the *template* folder for **Doxyfile** & **version.h** files.
 
-         :!~/show
-
-- **~/show**
-
-         #!/bin/bash
-
-         # CURRENT NETBEANS PROJECT
-         CNP=$HOME/Code/GenealogicalTree/build
-
-         make show -f $CNP/Makefile -C $CNP
-
- 
+![\image latex image/version.png width=300px](image/version.png)

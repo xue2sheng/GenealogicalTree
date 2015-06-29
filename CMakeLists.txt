@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.1)
 
 ############# PROJECT ####################
 
@@ -17,7 +17,7 @@ elseif(WIN32)
 
   ### Windows default make not good enough
   if(NOT ${CMAKE_GENERATOR} MATCHES "MSYS Makefiles") # another similar option "MinGW Makefiles"
-    message(FATAL_ERROR "Expected MinGW generator: cmake -G \"MSYS Makefiles\" ..")
+    message(WARNING "Expected MinGW generator: cmake -G \"MSYS Makefiles\" ..")
   endif()
 
 else()
@@ -28,7 +28,17 @@ endif(APPLE)
 
 #### C++ Project Name ###
 project(GenealogicalTree CXX)
+
+### Modern C++, GNU compiler ###
 message(STATUS "CMAKE_CXX_COMPILER = ${CMAKE_CXX_COMPILER}")
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    # require at least gcc 4.9.2 (some C++14 features)
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9.2)
+        message(FATAL_ERROR "GCC version must be at least 4.9.2!")
+    endif()
+else()
+    message(FATAL_ERROR "You are using an unsupported compiler! Compilation has only been tested with g++.")
+endif()
 
 # Useful commands 
 set(INVOKE_CMAKE_SCRIPT ${CMAKE_COMMAND} -P) 
@@ -45,7 +55,7 @@ add_custom_target(clean_git_commit_hash ${REMOVE} ${PROJECT_SOURCE_DIR}/Doxyfile
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
 )
 add_custom_target(git_commit_hash ${INVOKE_CMAKE_SCRIPT} ${PROJECT_SOURCE_DIR}/template/CMakeLists.txt
-  #DEPENDS clean_git_commit_hash 
+  DEPENDS clean_git_commit_hash 
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
 )
 
@@ -129,7 +139,7 @@ if(DOXYGEN_FOUND)
  endif()
 
  # make doc
- add_custom_target( doc ${PLANTUML} README.md src/ test/
+ add_custom_target( doc ${PLANTUML} README.md src/ test/ template/
    COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_SOURCE_DIR}/Doxyfile
    COMMAND ${ENV_CMD} ${CMAKE_BUILD_TOOL} -f ${PROJECT_SOURCE_DIR}/latex/Makefile -C ${PROJECT_SOURCE_DIR}/latex
    COMMAND ${COPY_DIFF} ${PROJECT_SOURCE_DIR}/latex/refman.pdf ${PDF_FILE}
@@ -157,6 +167,7 @@ find_package(Boost)
 if(Boost_FOUND)
 
   # make
+  add_definitions(-std=c++14)
   include_directories(${Boost_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/src)
   add_executable(${CMAKE_PROJECT_NAME} src/main.cpp src/version.h)
   add_dependencies(${CMAKE_PROJECT_NAME} git_commit_hash)

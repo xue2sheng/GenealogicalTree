@@ -16,12 +16,6 @@ using namespace boost;
 /// \param  argv An argument vector of the command line arguments
 /// \return an integer 0 upon exit success  
 ///
-/// @startuml ../image/main.png
-/// Alice -> Bob: trace 
-/// @enduml
-/// \image latex main.png width=100px
-///
-///
 int main(int argc, char** argv)
 {
     // create a typedef for the Graph type
