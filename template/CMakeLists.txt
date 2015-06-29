@@ -7,8 +7,6 @@ set(REMOVE_DIR ${CMAKE_COMMAND} -E remove_directory)
 set(REMOVE ${CMAKE_COMMAND} -E remove -f)
 set(ENV_CMD ${CMAKE_COMMAND} -E env ${EXTRA_ARG})
 
-message(STATUS "current_source_dir = ${CMAKE_CURRENT_SOURCE_DIR}")
-
 ## Working directories ##
 set(GIT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/..")
 set(DOXYFILE_IN "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in")

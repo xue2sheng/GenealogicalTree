@@ -47,11 +47,29 @@ note left of (root\nCMakeLists.txt): **documents**\nmake doc\nmake show
 
           cmake -G "MSYS Makefiles" ..
 
+As well a script, called **show** or something similar, will be created in your *home* directory as a shortcut for generating & viewing documentation. Don't hesitate to use it as a *template* for your specific environment.
+
+## Generate only documentation
+
+Similar commands to the previous ones:
+
+          mkdir build
+          cd build
+          cmake -DONLY_DOC=TRUE ..
+          make doc
+
+**Note:** If you happen to work with *Windows* and [Git](https://git-scm.com/download/win)/[MinGW](http://nuwen.net/mingw.html), don't forget to invoke *cmake* pointing to the **GNU** generator:
+
+          cmake -G "MSYS Makefiles" -DONLY_DOC=TRUE ..
+
+
 ## Development details
 
 In order to generate binaries & documentation, the following versions were used:
 
 ### For code
+
+Pay attention to *cmake* and *gcc* versions. A minimum is required to work on several O.S. using modern C++. Feel free to locally hack **CMakeLists.txt** to meet your needs.
 
 #### *Linux* ( Xubuntu 15.04 )
 
@@ -77,6 +95,8 @@ In order to generate binaries & documentation, the following versions were used:
  - **boost** *1.58*
 
 ### For documentation
+
+Environment variables to locate PlantUML *jar* and default *PDF* viewer can be defined to overwrite default values. See **CMakeLists.txt** for further information on your platform.
 
 #### *Linux*
 
@@ -106,7 +126,9 @@ In order to generate binaries & documentation, the following versions were used:
 To use **NetBeans** don't forget to configure a *cmake* project with *custom* **build** folder. Add at that moment any extra customization in the command line used by *cmake* instruction. For example:
 
  - -DCMAKE_CXX_COMPILER=g++-5 for **OSX**
+ - -DONLY_DOC=TRUE for only documentation on **Linux/OSX**
  - -G "MSYS Makefiles" for **Windows**
+ - -G "MSYS Makefiles" -DONLY_DOC=TRUE for only documentation on **Windows**
 
 **Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use **-lc** instead of just **-c** for its */bin/bash* flag. 
 

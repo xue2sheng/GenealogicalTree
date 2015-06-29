@@ -2,16 +2,44 @@ cmake_minimum_required(VERSION 3.1)
 
 ############# PROJECT ####################
 
-if(APPLE)
+if(ONLY_DOC)
+
+ message(STATUS "Only Documentation project")
+
+ if(APPLE)
+  set(EXTRA_ARG "PATH=\"$ENV{PATH}:/usr/texbin\"") # pdflatex
+  set(CMAKE_BUILD_TOOL "/usr/bin/make")
+
+ elseif(UNIX)
+  set(CMAKE_BUILD_TOOL "/usr/bin/make")
+
+ elseif(WIN32)
+  file(TO_CMAKE_PATH "C:\\MinGW\\bin\\make.exe" CMAKE_BUILD_TOOL)
+
+  ### Windows default make not good enough
+  if(NOT ${CMAKE_GENERATOR} MATCHES "MSYS Makefiles") # another similar option "MinGW Makefiles"
+    message(WARNING "Expected MinGW generator: cmake -G \"MSYS Makefiles\" ..")
+  endif()
+
+ endif(APPLE)
+
+ ### Not compiler required ###
+ project(GenealogicalTree NONE)
+
+else(ONLY_DOC)
+
+ message(STATUS "Binary & Documentation project")
+
+ if(APPLE)
   ### Use OSX Homebrew gcc & boost
   message(STATUS "CMAKE_CXX_COMPILER should be \"/usr/local/Cellar/gcc/5.1.0/bin/g++-5\" or similar")
   set(EXTRA_ARG "PATH=\"$ENV{PATH}:/usr/texbin\"") # pdflatex
  
-elseif(UNIX)
+ elseif(UNIX)
   ### Risky bet because it could be Solaris
   message(STATUS "Taking from granted this is a Linux box with evince installed")
   
-elseif(WIN32)
+ elseif(WIN32)
   ### Supposed BOOST_ROOT, BOOST_INCLUDE & BOOST_LIB defined, i.e. C:\MinGW, C:\MinGW\include && C:\MinGW\lib 
   message(STATUS "CMAKE_CXX_COMPILER should be \"C:/MinGW/bin/g++.exe\" or similar")
 
@@ -20,25 +48,27 @@ elseif(WIN32)
     message(WARNING "Expected MinGW generator: cmake -G \"MSYS Makefiles\" ..")
   endif()
 
-else()
+ else()
   ### Just in case
   message(FATAL_ERROR "O.S. ${CMAKE_SYSTEM} NOT SUPPORTED")
 
-endif(APPLE)
+ endif(APPLE)
 
-#### C++ Project Name ###
-project(GenealogicalTree CXX)
+ #### C++ Project Name ###
+ project(GenealogicalTree CXX)
 
-### Modern C++, GNU compiler ###
-message(STATUS "CMAKE_CXX_COMPILER = ${CMAKE_CXX_COMPILER}")
-if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+ ### Modern C++, GNU compiler ###
+ message(STATUS "CMAKE_CXX_COMPILER = ${CMAKE_CXX_COMPILER}")
+ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     # require at least gcc 4.9.2 (some C++14 features)
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9.2)
         message(FATAL_ERROR "GCC version must be at least 4.9.2!")
     endif()
-else()
+ else()
     message(FATAL_ERROR "You are using an unsupported compiler! Compilation has only been tested with g++.")
-endif()
+ endif()
+
+endif(ONLY_DOC)
 
 # Useful commands 
 set(INVOKE_CMAKE_SCRIPT ${CMAKE_COMMAND} -P) 
@@ -70,15 +100,15 @@ if(DOXYGEN_FOUND)
    if(APPLE)
 
      ### PlantUML
-     if($ENV{PLANTUMLJAR})
+     if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
        set(PLANTUML java -jar $ENV{PLANTUMLJAR})
      else()
        set(PLANTUML java -jar /opt/plantuml/plantuml.jar)
      endif()
 
      ### PDF Reader 
-     if($ENV{PDF_READER})
-       set(PDF_READER $ENV{PDF_READER})
+     if($ENV{PDF_READER} MATCHES "..*")
+       set(PDF_READER "$ENV{PDF_READER}")
      else()
        set(PDF_READER "Preview")
      endif()
@@ -92,15 +122,15 @@ if(DOXYGEN_FOUND)
    elseif(UNIX)
 
      ### PlantUML
-     if($ENV{PLANTUMLJAR})
+     if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
        set(PLANTUML java -jar $ENV{PLANTUMLJAR})
      else()
        set(PLANTUML java -jar /opt/plantuml/plantuml.jar)
      endif()
 
      ### PDF Reader 
-     if($ENV{PDF_READER})
-       set(PDF_READER $ENV{PDF_READER})
+     if($ENV{PDF_READER} MATCHES "..*")
+       set(PDF_READER "$ENV{PDF_READER}")
      else()
        set(PDF_READER "evince")
      endif()
@@ -114,15 +144,17 @@ if(DOXYGEN_FOUND)
    elseif(WIN32)
 
      ### PlantUML
-     if($ENV{PLANTUMLJAR})
-      set(PLANTUML java -jar $ENV{PLANTUMLJAR})
+     if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
+      file(TO_CMAKE_PATH "$ENV{PLANTUMLJAR}" PLANTUMLJAR_CMAKE)
+      set(PLANTUML java -jar ${PLANTUMLJAR_CMAKE})
      else()
       set(PLANTUML java -jar C:/strawberry/perl/site/bin/plantuml.jar)
      endif()
 
      ### PDF Reader 
-     if($ENV{PDF_READER})
-       set(PDF_READER $ENV{PDF_READER})
+     if($ENV{PDF_READER} MATCHES ".*exe$")
+       file(TO_CMAKE_PATH "$ENV{PDF_READER}" PDF_READER_CMAKE)
+       set(PDF_READER "${PDF_READER_CMAKE}")
      else()
        set(PDF_READER "C:\\Program Files (x86)\\Adobe\\Reader 11.0\\Reader\\AcroRd32.exe")
      endif()
@@ -160,14 +192,19 @@ if(DOXYGEN_FOUND)
 	
 endif(DOXYGEN_FOUND)
 
-########## BINARIES ###################
+if(NOT ONLY_DOC)
 
-# Boost required for 'make' and 'make install'
-find_package(Boost)
-if(Boost_FOUND)
+ ########## BINARIES ###################
+
+ # Boost required for 'make' and 'make install'
+ find_package(Boost)
+ if(Boost_FOUND)
 
   # make
   add_definitions(-std=c++14)
+  if(WIN32) # warning: 'template<class> class std::auto_ptr' is deprecated
+   add_definitions(-Wno-deprecated) 
+  endif()
   include_directories(${Boost_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/src)
   add_executable(${CMAKE_PROJECT_NAME} src/main.cpp src/version.h)
   add_dependencies(${CMAKE_PROJECT_NAME} git_commit_hash)
@@ -176,8 +213,8 @@ if(Boost_FOUND)
   # make install
   install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION ${PROJECT_SOURCE_DIR}/bin)
 
-else()  
+ else()  
   message(STATUS "Boost is needed to build executables")
+ endif(Boost_FOUND)
 
-endif(Boost_FOUND)
-
+endif(NOT ONLY_DOC)
