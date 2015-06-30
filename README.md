@@ -11,6 +11,22 @@ Program should be able to **find all the descendant with name Bob for all the as
 - the application should posses tests that are checking possible edge cases and ensure the stability of the application.
 - the designed data structure should ensure optimized search time on following fields: name, last name, date of birth and location.
 
+## Expected installed software
+
+A Modern C++ GNU compiler, *g++* 4.9.2 or above, and a recent *cmake*, 3.1 or above, are the minimum for binaries. As well a valid *boost* library is supposed to be installed.
+
+Regarding to documentation, *doxygen*, *latex*, *graphviz* and *plantuml.jar* are needed. For example, if you work with Xubuntu 15.04 or its **Docker** equivalent, the following commands might do the trick for you:
+    
+          sudo apt-get -y install git build-essential libboost-all-dev doxygen doxygen-latex openjdk-8-jdk graphviz
+          sudo add-apt-repository -y ppa:george-edison55/cmake-3.x
+          sudo apt-get -y update
+          sudo apt-get -y install cmake
+          sudo apt-get -y upgrade
+          sudo mkdir /opt/plantuml && sudo chmod a+wr /opt/plantuml
+          wget http://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O /opt/plantuml/plantuml.jar
+
+For other O.S., have a look to [Homebrew](http://brew.sh) or [Git](https://git-scm.com/download/win)/[MinGW](http://nuwen.net/mingw.html)  
+
 ## Generate binaries & documentation
 
 Usual commands:
