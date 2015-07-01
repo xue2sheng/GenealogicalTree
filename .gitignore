@@ -9,6 +9,8 @@ bin/
 .DS*
 nbproject/
 .metadata/
+*.pdf
+image/
 
 # version.h should be created by cmake with git info
 src/version.h

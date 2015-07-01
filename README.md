@@ -17,13 +17,15 @@ A Modern C++ GNU compiler, *g++* 4.9.2 or above, and a recent *cmake*, 3.1 or ab
 
 Regarding to documentation, *doxygen*, *latex*, *graphviz* and *plantuml.jar* are needed. For example, if you work with Xubuntu 15.04 or its **Docker** equivalent, the following commands might do the trick for you:
     
-          sudo apt-get -y install git build-essential libboost-all-dev doxygen doxygen-latex openjdk-8-jdk graphviz
+          sudo apt-get -y install git build-essential libboost-all-dev 
+          sudo apt-get -y install doxygen doxygen-latex openjdk-8-jdk graphviz
           sudo add-apt-repository -y ppa:george-edison55/cmake-3.x
           sudo apt-get -y update
           sudo apt-get -y install cmake
           sudo apt-get -y upgrade
           sudo mkdir /opt/plantuml && sudo chmod a+wr /opt/plantuml
-          wget http://sourceforge.net/projects/plantuml/files/plantuml.jar/download -O /opt/plantuml/plantuml.jar
+          wget http://sourceforge.net/projects/plantuml/files/plantuml.jar/download \
+               -O /opt/plantuml/plantuml.jar
 
 For other O.S., have a look to [Homebrew](http://brew.sh) or [Git](https://git-scm.com/download/win)/[MinGW](http://nuwen.net/mingw.html)  
 
