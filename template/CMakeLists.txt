@@ -20,7 +20,8 @@ set(HEADER_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../header.tex")
 if(WIN32)
  set(GIT_SYSTEM "$ENV{USERNAME}@$ENV{COMPUTERNAME}")
 else()
- set(GIT_SYSTEM "$ENV{USER}@$ENV{HOSTNAME}")
+ site_name(CMAKE_HOSTNAME)
+ set(GIT_SYSTEM "$ENV{USER}@${CMAKE_HOSTNAME}")
 endif(WIN32)
 
 #### Git Info ####
