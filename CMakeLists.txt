@@ -8,13 +8,32 @@ if(ONLY_DOC)
 
  if(APPLE)
   set(EXTRA_ARG "PATH=\"$ENV{PATH}:/usr/texbin\"") # pdflatex
-  set(CMAKE_BUILD_TOOL "/usr/bin/make")
+  ### make
+  if(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
+    message(STATUS "Using defined make")
+  else()
+    set(CMAKE_BUILD_TOOL "/usr/bin/make")
+  endif()
+  message(STATUS "CMAKE_BUILD_TOOL = ${CMAKE_BUILD_TOOL}")
 
  elseif(UNIX)
-  set(CMAKE_BUILD_TOOL "/usr/bin/make")
-
+  ### make
+  if(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
+    message(STATUS "Using defined make")
+  else()
+    set(CMAKE_BUILD_TOOL "/usr/bin/make")
+  endif()
+  message(STATUS "CMAKE_BUILD_TOOL = ${CMAKE_BUILD_TOOL}")
+ 
  elseif(WIN32)
-  file(TO_CMAKE_PATH "C:\\MinGW\\bin\\make.exe" CMAKE_BUILD_TOOL)
+  ### make
+  if(${CMAKE_BUILD_TOOL} MATCHES ".*make.exe$")
+    message(STATUS "Using defined make")
+  else()
+    file(TO_CMAKE_PATH "C:\\MinGW\\bin\\make.exe" CMAKE_BUILD_TOOL)
+  endif()
+  message(STATUS "CMAKE_BUILD_TOOL = ${CMAKE_BUILD_TOOL}")
+ 
 
   ### Windows default make not good enough
   if(NOT ${CMAKE_GENERATOR} MATCHES "MSYS Makefiles") # another similar option "MinGW Makefiles"
@@ -114,9 +133,13 @@ if(DOXYGEN_FOUND)
      endif()
     
      ### Utility to show pdfs
-     set(UTILITY  "$ENV{HOME}/show") 
+     set(UTILITY  "${PROJECT_BINARY_DIR}/show") 
      file(WRITE ${UTILITY} "#!/bin/bash\n")
      file(APPEND ${UTILITY} "make show -f ${PROJECT_BINARY_DIR}/Makefile -C ${PROJECT_BINARY_DIR} > /dev/null 2>&1\n")
+     file(COPY ${UTILITY} DESTINATION $ENV{HOME} 
+          FILE_PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                           GROUP_WRITE GROUP_READ GROUP_EXECUTE
+                           WORLD_EXECUTE)
      message(STATUS "Created ~/show utility")
      
    elseif(UNIX)
@@ -136,9 +159,13 @@ if(DOXYGEN_FOUND)
      endif()
     
      ### Utility to show pdfs
-     set(UTILITY  "$ENV{HOME}/show") 
+     set(UTILITY  "${PROJECT_BINARY_DIR}/show") 
      file(WRITE ${UTILITY} "#!/bin/bash\n")
      file(APPEND ${UTILITY} "make show -f ${PROJECT_BINARY_DIR}/Makefile -C ${PROJECT_BINARY_DIR} > /dev/null 2>&1\n")
+     file(COPY ${UTILITY} DESTINATION $ENV{HOME} 
+          FILE_PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+                           GROUP_WRITE GROUP_READ GROUP_EXECUTE
+                           WORLD_EXECUTE)
      message(STATUS "Created ~/show utility")
 
    elseif(WIN32)

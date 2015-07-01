@@ -37,8 +37,9 @@ Usual commands:
           cd build
           cmake ..
           make
-          make install
           make doc
+
+Optionally you can invoke *make install* to install binaries or *make show* to install documentation utility
 
 ![\image latex image/cmake.png width=300px](image/cmake.png)
 
@@ -80,6 +81,13 @@ Similar commands to the previous ones:
 
           cmake -G "MSYS Makefiles" -DONLY_DOC=TRUE ..
 
+**Note:** If your **make** utility is not installed in the default place, define *CMAKE_BUILD_TOOL* 
+
+          cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TOOL=<your location> -DONLY_DOC=TRUE ..
+
+As well, if you installed the documentation utility with **make show**, you're supposed to able to recreate and view that documentation PDF though usual *ssh* connection with enabled X11:
+
+          ssh -X <user>@<location> "./show"
 
 ## Development details
 
@@ -89,13 +97,13 @@ In order to generate binaries & documentation, the following versions were used:
 
 Pay attention to *cmake* and *gcc* versions. A minimum is required to work on several O.S. using modern C++. Feel free to locally hack **CMakeLists.txt** to meet your needs.
 
-#### *Linux* ( Xubuntu 15.04 )
+#### Linux ( Xubuntu 15.04 )
 
-- **cmake** *3.1.3*
+- **cmake** *3.2.2*
 - **gcc** *4.9.2*
 - **boost** *1.55*
 
-#### *OSX* ( Yosemite 10.10.3 )
+#### OSX ( Yosemite 10.10.4 )
 
 - **cmake** *3.2.2*
 - **gcc** *5.1*
@@ -106,7 +114,7 @@ Pay attention to *cmake* and *gcc* versions. A minimum is required to work on se
           brew install gcc
           brew install boost --cc=gcc-5
          
-#### *Windows* ( Win7 x64 )
+#### Windows ( Win7 x64 )
 
  - **cmake** *3.3.0*
  - **gcc** *5.1*
@@ -116,21 +124,21 @@ Pay attention to *cmake* and *gcc* versions. A minimum is required to work on se
 
 Environment variables to locate PlantUML *jar* and default *PDF* viewer can be defined to overwrite default values. See **CMakeLists.txt** for further information on your platform.
 
-#### *Linux*
+#### Linux
 
 - **doxygen** *1.8.9.1*
 - **latex/pdfTeX** *2.6-1.40.15*
 - **graphviz/dot** *2.38.0*
 - **java/plantuml** *1.8.0_45/8026*
 
-#### *OSX*
+#### OSX
 
 - **doxygen** *1.8.9.1*
 - **latex/pdfTeX** *2.6-1.40.15*
 - **graphviz/dot** *2.38.0*
 - **java/plantuml** *1.8.0_40/8026*
 
-#### *Windows*
+#### Windows
 
  - **doxygen** *1.8.9.1*
  - **latex/pdfTeX** *2.9.5496-1.40.15*
@@ -148,7 +156,7 @@ To use **NetBeans** don't forget to configure a *cmake* project with *custom* **
  - -G "MSYS Makefiles" for **Windows**
  - -G "MSYS Makefiles" -DONLY_DOC=TRUE for only documentation on **Windows**
 
-**Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use **-lc** instead of just **-c** for its */bin/bash* flag. 
+**Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use "-lc" instead of just "-c" for its /bin/bash flag. 
 
 ## GIT Commit Hash
 
