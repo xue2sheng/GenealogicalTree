@@ -13,6 +13,15 @@ set(DOXYFILE_IN "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in")
 set(DOXYFILE_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile")
 set(VERSION_IN "${CMAKE_CURRENT_SOURCE_DIR}/version.h.in")
 set(VERSION_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../src/version.h")
+set(HEADER_IN "${CMAKE_CURRENT_SOURCE_DIR}/header.tex.in")
+set(HEADER_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../header.tex")
+
+## System Info
+if(WIN32)
+ set(GIT_SYSTEM "$ENV{USERNAME}@$ENV{COMPUTERNAME}")
+else()
+ set(GIT_SYSTEM "$ENV{USER}@$ENV{HOSTNAME}")
+endif(WIN32)
 
 #### Git Info ####
 execute_process(
@@ -29,5 +38,7 @@ execute_process(
 )
 configure_file(${VERSION_IN} ${VERSION_OUT})
 configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT})
+configure_file(${HEADER_IN} ${HEADER_OUT})
 
 message(STATUS "GIT_DETAILS=\"${CMAKE_GIT_DETAILS}\"")
+message(STATUS "GIT_SYSTEM=\"${GIT_SYSTEM}\"")
