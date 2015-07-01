@@ -1,8 +1,8 @@
-Sources
-=======
+Application Core Code
+=====================
 
-Source folder for headears & code files.
+Source folder for headears & code files directly involved with the core problem. 
 
-## Generate Files ##
+## Generate Files
 
-**version.h** is generated with *GIT* information
+**version.h** is generated with *GIT* information by *cmake*

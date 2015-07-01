@@ -5,13 +5,43 @@ Genealogical Tree
 
 Program should be able to **find all the descendant with name Bob for all the ascendants with name Will on any level of ancestry**. In order to present the capabilities of your app:
 
-- implement the application to optimize the initialization time
-- application should have built in data about genealogical tree of people living in particular country
+- implement the application to optimize the initialization time.
+- application should have built in data about genealogical tree of people living in particular country.
 - please generate a representative data that has sample people an relationships between them. Use all varieties of names (can be also generated) but also put two test names (Bob and Will) and connect them in different relationships.
 - the application should posses tests that are checking possible edge cases and ensure the stability of the application.
 - the designed data structure should ensure optimized search time on following fields: name, last name, date of birth and location.
 
-## Expected installed software
+## Approach
+
+Instead of starting directly with the problem core, don't test thoroughly edge cases, leaping into too early optimization, don't document your results/decisions/mistakes and ending with an app that only run partially on your development environment, the **aproach** will be the opposite one. 
+
+1. Ensure a minimum of portability on different environments.
+2. Document as much automatically as possible to draw conclusions from your mistakes and let others reproduce your results.
+3. [Write meaningful tests](test/README.md) to cover your app and let you tackle optimizations knowing you're not breaking previous development.
+4. [Measure your application](optimize/README.md) in order to compare improvements/regressions during the optimization stage.
+5. [Solve the core problem](src/README.md) in the most simple and maintainable way at our disposal. 
+
+![\image latex image/approach.png width=400px](image/approach.png)
+
+<!---
+@startuml image/approach.png
+left to right direction
+(Test\napplication) <.. (Portability &\nDocumentation) : README.md
+(Measure\napplication) <.. (Portability &\nDocumentation)
+(Core\napplication) <.. (Portability &\nDocumentation) : src\nREADME.md
+(Core\napplication) <|-- (Test\napplication) : test\nREADME.md
+(Core\napplication) <|-- (Measure\napplication) : optimize\nREADME.md
+note top of (Portability &\nDocumentation): cmake\nplantuml\ndoxygen\nmarkdown 
+note left of (Measure\napplication): R scripts 
+note "graph & test\nboost lib" as boost
+boost .. (Core\napplication)
+boost .. (Test\napplication)
+@enduml
+--->
+
+No doubt this approach is an overkill for a pet project but it's way more realistic for big, long C++ ones. 
+
+# Portability and documentation 
 
 A Modern C++ GNU compiler, *g++* 4.9.2 or above, and a recent *cmake*, 3.1 or above, are the minimum for binaries. As well a valid *boost* library is supposed to be installed.
 
@@ -39,20 +69,23 @@ Usual commands:
           make
           make doc
 
-Optionally you can invoke *make install* to install binaries or *make show* to install documentation utility
+Optionally you can invoke *make install* to install binaries or *make show* to install documentation utility.
 
-![\image latex image/cmake.png width=300px](image/cmake.png)
+![\image latex image/cmake.png width=450px](image/cmake.png)
 
 <!---
 @startuml image/cmake.png
 left to right direction
-(version.h) <|-- (template\nCMakeLists.txt)   
+(version.h) <|-- (template\nCMakeLists.txt)
 (Doxyfile) <|-- (template\nCMakeLists.txt) : generate  
-(template\nCMakeLists.txt) <.. (version.h.in) 
+(header.tex) <|-- (template\nCMakeLists.txt)
+(template\nCMakeLists.txt) <.. (version.h.in)
 (template\nCMakeLists.txt) <.. (Doxyfile.in) : template 
+(template\nCMakeLists.txt) <.. (header.tex.in)
+(Doxyfile) <-- (header.tex) : details
 (root\nCMakeLists.txt) <-- (version.h) 
 (root\nCMakeLists.txt) <-- (Doxyfile) : Git\nCommit\nHash
-(Doxyfile) <.. (root\nREADME.md) : include
+(Doxyfile) <.. (several\nREADME.md) : include
 note left of (root\nCMakeLists.txt): **binaries**\nmake\nmake install
 note left of (root\nCMakeLists.txt): **documents**\nmake doc\nmake show 
 @enduml
@@ -68,7 +101,7 @@ note left of (root\nCMakeLists.txt): **documents**\nmake doc\nmake show
 
 As well a script, called **show** or something similar, will be created in your *home* directory as a shortcut for generating & viewing documentation. Don't hesitate to use it as a *template* for your specific environment.
 
-## Generate only documentation
+## Generate only documentation 
 
 Similar commands to the previous ones:
 
@@ -158,8 +191,8 @@ To use **NetBeans** don't forget to configure a *cmake* project with *custom* **
 
 **Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use "-lc" instead of just "-c" for its /bin/bash flag. 
 
-## GIT Commit Hash
+## GIT Commit Hash 
 
-In order to add the specific **git commit hash** into code & documentation, *templates* are defined in the *template* folder for **Doxyfile** & **version.h** files.
+In order to add the specific **git commit hash** into code & documentation, *templates* are defined in the *template* folder for **Doxyfile**, **header.tex** & **version.h** files.
 
-![\image latex image/version.png width=300px](image/version.png)
+![\image latex image/version.png width=400px](image/version.png)
