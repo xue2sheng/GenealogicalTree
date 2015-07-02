@@ -31,18 +31,20 @@ First of all, we should grasp a rough idea about which range of numbers to consi
 
 This way we can assume that taking into account around 200 years of sensible information on our ascendants, around 10 generations back in time, we suppose not to deal with more than 4000000000 individuals.  
 
-As well, we could consider that our application should only tackle around different 6000 first names or 60000 last names in our given country. Even we can take for granted that there aren't more than 60000 locations.
+As well, we could consider that our application should only tackle around different 6000 first names or 60000 last names in our given country. Even we can take for granted that there aren't more than 60000 locations, that we might classify them in two levels; one coarse level easy to remember and another fine one more close to small places.
 
 Translate into C++:
 
 - First Name: unsigned short int (16)
 - Last Name: unsigned short int (16)
-- Location of Birth: unsigned short int (16)
 - Year of Birth: unsigned char (8) < 200 years
+- Coarse Location of Birth: unsigned short int (8)
 - Month of Birth: unsigned char (8)
 - Day of Birth: unsigned char (8)
+- Fine location of Birth: unsigned short int (8)
+- More information related to a specific subject: extra indexes.
 
-Due to the fact that registers & memory work better with 16, 32 and 64 bits, let's identify our individuals with the first 64 bits of the previous fields. In other words, don't take into account the day of birth. 
+This way we can use the **first 64 bits of information** as a valid **identification** for the individuals and with the advantage of getting the relevant information to debug first: *name and generation*.
 
 
 ## Generated Files
