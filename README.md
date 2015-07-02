@@ -26,16 +26,20 @@ Instead of starting directly with the problem core, don't test thoroughly edge c
 <!---
 @startuml image/approach.png
 left to right direction
-(Test\napplication) <.. (Portability &\nDocumentation) : README.md
-(Measure\napplication) <.. (Portability &\nDocumentation)
-(Core\napplication) <.. (Portability &\nDocumentation) : src\nREADME.md
-(Core\napplication) <|-- (Test\napplication) : test\nREADME.md
-(Core\napplication) <|-- (Measure\napplication) : optimize\nREADME.md
-note top of (Portability &\nDocumentation): cmake\nplantuml\ndoxygen\nmarkdown 
-note left of (Measure\napplication): R scripts 
+(Test\napplication\n--\ntest\README.md) as (Test)
+(Portability &\nDocumentation\n--\nREADME.md) as (Doc)
+(Measure\napplication\n--\noptimize\README.md) as (Measure) 
+(Core\napplication\n--\nsrc\README.md) as (Core)
+(Test) <.. (Doc)
+(Measure) <.. (Doc)
+(Core) <.. (Doc)
+(Core) <|-- (Test)
+(Core) <|-- (Measure)
+note top of (Doc): cmake\nplantuml\ndoxygen\nmarkdown 
+note left of (Measure): R scripts 
 note "graph & test\nboost lib" as boost
-boost .. (Core\napplication)
-boost .. (Test\napplication)
+boost .. (Core)
+boost .. (Test)
 @enduml
 --->
 
@@ -43,7 +47,7 @@ No doubt this approach is an overkill for a pet project but it's way more realis
 
 # Portability and documentation 
 
-A Modern C++ GNU compiler, *g++* 4.9.2 or above, and a recent *cmake*, 3.1 or above, are the minimum for binaries. As well a valid *boost* library is supposed to be installed.
+A Modern C++ GNU compiler, g++ 4.9.2 or above, and a recent cmake, 3.1 or above, are the minimum. As well a valid *boost* library is supposed to be installed.
 
 Regarding to documentation, *doxygen*, *latex*, *graphviz* and *plantuml.jar* are needed. For example, if you work with Xubuntu 15.04 or its **Docker** equivalent, the following commands might do the trick for you:
     
@@ -93,7 +97,7 @@ note left of (root\nCMakeLists.txt): **documents**\nmake doc\nmake show
 
 **Note:** If you happen to work with *OSX* and [Homebrew](http://brew.sh), don't forget to invoke *cmake* pointing to the **GNU** compiler:
 
-          cmake -DCMAKE_CXX_COMPILER=g++-5 ..
+          cmake -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-5 ..
 
 **Note:** If you happen to work with *Windows* and [Git](https://git-scm.com/download/win)/[MinGW](http://nuwen.net/mingw.html), don't forget to invoke *cmake* pointing to the **GNU** generator:
 
@@ -103,7 +107,7 @@ As well a script, called **show** or something similar, will be created in your 
 
 ## Generate only documentation 
 
-Similar commands to the previous ones:
+Similar commands to the previous ones, just the compiler is not required:
 
           mkdir build
           cd build
