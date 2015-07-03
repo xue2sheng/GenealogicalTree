@@ -110,7 +110,6 @@
   \newpage{\pagestyle{empty}\cleardoublepage}%
 }
 
-
 %===== C O N T E N T S =====
 
 \begin{document}
@@ -139,11 +138,11 @@
 {\normalsize Generated:}\\
 {\small $datetime on @GIT_SYSTEM@ }\\
 \vspace*{0.4cm}
-{\normalsize Git Commit Hash:}\\ 
-{\small @CMAKE_GIT_COMMIT_HASH@}\\
+{\normalsize Git Commit Hash: }\\ 
+{\small @CMAKE_GIT_COMMIT_HASH@ }\\
 \vspace*{0.4cm}
 {\normalsize Git Details:}\\
-{\footnotesize @CMAKE_GIT_DETAILS@}\\
+{\footnotesize @CMAKE_GIT_DETAILS@ }\\
 \end{flushright}
 \clearemptydoublepage
 \tableofcontents
