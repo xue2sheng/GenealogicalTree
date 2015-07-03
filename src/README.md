@@ -35,13 +35,13 @@ As well, we could consider that our application should only tackle around differ
 
 Translate into C++:
 
-- First Name: unsigned short int (16)
-- Last Name: unsigned short int (16)
-- Year of Birth: unsigned char (8) < 200 years
-- Coarse Location of Birth: unsigned short int (8)
-- Month of Birth: unsigned char (8)
-- Day of Birth: unsigned char (8)
-- Fine location of Birth: unsigned short int (8)
+- First Name: unsigned short int (uint16_t)
+- Last Name: unsigned short int (uint16_t)
+- Year of Birth: unsigned char (unit8_t) < 200 years
+- Coarse Location of Birth: unsigned short int (unit8_t)
+- Month of Birth: unsigned char (uint8_t)
+- Day of Birth: unsigned char (unit8_t)
+- Fine location of Birth: unsigned short int (uint8_t)
 - More information related to a specific subject: extra indexes.
 
 This way we can use the **first 64 bits of information** as a valid **identification** for the individuals and with the advantage of getting the relevant information to debug first: *name and generation*.
@@ -49,4 +49,10 @@ This way we can use the **first 64 bits of information** as a valid **identifica
 
 ## Generated Files
 
-**version.h** is generated with *GIT* information by *cmake*
+**version.h** is generated with *GIT* information by *cmake*.
+
+But in order to **speed up** local compilations and let us hardcode our locally generated files, it's possible to instruct *cmake* to use this hardcoded header instead of usual GIT one.
+
+The parameter to pass onto **cmake** is **VERSION_HARDCODED**:
+
+          cmake <rest of options> -DVERSION_HARDCODED=TRUE ..

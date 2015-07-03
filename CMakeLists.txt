@@ -91,6 +91,7 @@ endif(ONLY_DOC)
 
 # Useful commands 
 set(INVOKE_CMAKE_SCRIPT ${CMAKE_COMMAND} -P) 
+set(INVOKE_CMAKE_SCRIPT_HARDCODED ${CMAKE_COMMAND} -DVERSION_HARDCODED=TRUE -P) 
 set(COPY_DIFF ${CMAKE_COMMAND} -E copy_if_different) 
 set(REMOVE_DIR ${CMAKE_COMMAND} -E remove_directory)
 set(REMOVE ${CMAKE_COMMAND} -E remove -f)
@@ -98,15 +99,28 @@ set(ENV_CMD ${CMAKE_COMMAND} -E env ${EXTRA_ARG})
 
 #### Git Info ####
 add_subdirectory(${PROJECT_SOURCE_DIR}/template)
-# clean & regenerate git commit hash
-add_custom_target(clean_git_commit_hash ${REMOVE} ${PROJECT_SOURCE_DIR}/Doxyfile
-  COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/src/version.h
-  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
-)
-add_custom_target(git_commit_hash ${INVOKE_CMAKE_SCRIPT} ${PROJECT_SOURCE_DIR}/template/CMakeLists.txt
-  DEPENDS clean_git_commit_hash 
-  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
-)
+if(VERSION_HARDCODED)
+  # clean & regenerate git commit hash
+  add_custom_target(clean_git_commit_hash ${REMOVE} ${PROJECT_SOURCE_DIR}/Doxyfile
+   COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/header.tex
+   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
+  )
+  add_custom_target(git_commit_hash ${INVOKE_CMAKE_SCRIPT_HARDCODED} ${PROJECT_SOURCE_DIR}/template/CMakeLists.txt 
+    DEPENDS clean_git_commit_hash 
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
+  )
+else()
+  # clean & regenerate git commit hash
+  add_custom_target(clean_git_commit_hash ${REMOVE} ${PROJECT_SOURCE_DIR}/Doxyfile
+   COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/src/version.h
+   COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/header.tex
+   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
+  )
+  add_custom_target(git_commit_hash ${INVOKE_CMAKE_SCRIPT} ${PROJECT_SOURCE_DIR}/template/CMakeLists.txt
+    DEPENDS clean_git_commit_hash 
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
+  )
+endif(VERSION_HARDCODED)
 
 ############# DOCUMENTATION ##############
 
@@ -232,13 +246,15 @@ if(NOT ONLY_DOC)
 
   # make
   add_definitions(-std=c++14)
+
   if(WIN32) # warning: 'template<class> class std::auto_ptr' is deprecated
    add_definitions(-Wno-deprecated) 
   endif()
+
   include_directories(${Boost_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/src)
   add_executable(${CMAKE_PROJECT_NAME} src/main.cpp src/version.h)
-  add_dependencies(${CMAKE_PROJECT_NAME} git_commit_hash)
   #target_link_libraries(${CMAKE_PROJECT_NAME} ${Boost_LIBRARIES})
+  add_dependencies(${CMAKE_PROJECT_NAME} git_commit_hash)
 
   # make install
   install(TARGETS ${CMAKE_PROJECT_NAME} DESTINATION ${PROJECT_SOURCE_DIR}/bin)

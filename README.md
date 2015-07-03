@@ -200,3 +200,9 @@ To use **NetBeans** don't forget to configure a *cmake* project with *custom* **
 In order to add the specific **git commit hash** into code & documentation, *templates* are defined in the *template* folder for **Doxyfile**, **header.tex** & **version.h** files.
 
 ![\image latex image/version.png width=400px](image/version.png)
+
+In order to **speed up** local compilations and let us hardcode our locally generated files, it's possible to instruct *cmake* to use this hardcoded header instead of usual GIT one.
+
+The parameter to pass onto **cmake** is **VERSION_HARDCODED**:
+
+          cmake <rest of options> -DVERSION_HARDCODED=TRUE ..

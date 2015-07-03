@@ -11,10 +11,16 @@ set(ENV_CMD ${CMAKE_COMMAND} -E env ${EXTRA_ARG})
 set(GIT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/..")
 set(DOXYFILE_IN "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in")
 set(DOXYFILE_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile")
-set(VERSION_IN "${CMAKE_CURRENT_SOURCE_DIR}/version.h.in")
-set(VERSION_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../src/version.h")
 set(HEADER_IN "${CMAKE_CURRENT_SOURCE_DIR}/header.tex.in")
 set(HEADER_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../header.tex")
+
+if(VERSION_HARDCODED)
+   set(VERSION_IN "${CMAKE_CURRENT_SOURCE_DIR}/version_hardcoded.h.in")
+   set(VERSION_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../src/version.h") 
+else()
+   set(VERSION_IN "${CMAKE_CURRENT_SOURCE_DIR}/version.h.in")
+   set(VERSION_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../src/version.h")
+endif()
 
 ## System Info
 if(WIN32)
@@ -24,19 +30,32 @@ else()
  set(GIT_SYSTEM "$ENV{USER}@${CMAKE_HOSTNAME}")
 endif(WIN32)
 
-#### Git Info ####
-execute_process(
+if(VERSION_HARDCODED)
+
+  ### FAKE info ###
+  set(CMAKE_GIT_DETAILS "0123456 (HEAD, origin/develop, origin/HEAD, develop) FAKE: hardcoded values without using GIT")
+  set(CMAKE_GIT_COMMIT_HASH "0123456")
+
+  message(STATUS "Using harcoded values, i.e. 0123456, at generated version.h")
+else()
+
+ #### Git Info ####
+ execute_process(
   COMMAND git log -1 --format=%h 
   WORKING_DIRECTORY ${GIT_DIR} 
   OUTPUT_VARIABLE CMAKE_GIT_COMMIT_HASH
   OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-execute_process(
+ )
+ execute_process(
   COMMAND git log --oneline --decorate -1
   WORKING_DIRECTORY ${GIT_DIR} 
   OUTPUT_VARIABLE CMAKE_GIT_DETAILS
   OUTPUT_STRIP_TRAILING_WHITESPACE
-)
+ )
+
+ message(STATUS "Using GIT values at generated version.h")
+endif(VERSION_HARDCODED)
+
 configure_file(${VERSION_IN} ${VERSION_OUT})
 configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT})
 configure_file(${HEADER_IN} ${HEADER_OUT})
