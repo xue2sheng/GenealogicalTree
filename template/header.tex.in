@@ -1,5 +1,6 @@
 % Latex header for doxygen 1.8.9.1
-\documentclass[twoside]{book}
+%\documentclass[twoside]{book}
+\documentclass[oneside]{book}
 
 % Packages required by doxygen
 \usepackage{fixltx2e}

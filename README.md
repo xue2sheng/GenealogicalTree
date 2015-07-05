@@ -16,15 +16,15 @@ Program should be able to **find all the descendant with name Bob for all the as
 Instead of starting directly with the problem core, don't test thoroughly edge cases, leaping into too early optimization, don't document your results/decisions/mistakes and ending with an app that only run partially on your development environment, the **aproach** will be the opposite one. 
 
 1. Ensure a minimum of portability on different environments.
-2. Document as much automatically as possible to draw conclusions from your mistakes and let others reproduce your results.
+2. Document as much automatically, [using templates to gather external information](template/README.md), as possible to draw conclusions from your mistakes and let others reproduce your results.
 3. [Write meaningful tests](test/README.md) to cover your app and let you tackle optimizations knowing you're not breaking previous development.
 4. [Measure your application](optimize/README.md) in order to compare improvements/regressions during the optimization stage.
 5. [Solve the core problem](src/README.md) in the most simple and maintainable way at our disposal. 
 
-![\image latex image/approach.png width=400px](image/approach.png)
+![width=400px](image/approach.png)
 
 <!---
-@startuml image/approach.png
+@startuml approach.png
 left to right direction
 (Test\napplication\n--\ntest\README.md) as (Test)
 (Portability &\nDocumentation\n--\nREADME.md) as (Doc)
@@ -73,12 +73,12 @@ Usual commands:
           make
           make doc
 
-Optionally you can invoke *make install* to install binaries or *make show* to install documentation utility.
+Optionally you can invoke *make install* to install binaries or *make install_doc* / *make show* to install / preview documentation.
 
-![\image latex image/cmake.png width=450px](image/cmake.png)
+![width=450px](image/cmake.png)
 
 <!---
-@startuml image/cmake.png
+@startuml cmake.png
 left to right direction
 (version.h) <|-- (template\nCMakeLists.txt)
 (Doxyfile) <|-- (template\nCMakeLists.txt) : generate  
@@ -125,6 +125,11 @@ Similar commands to the previous ones, just the compiler is not required:
 As well, if you installed the documentation utility with **make show**, you're supposed to able to recreate and view that documentation PDF though usual *ssh* connection with enabled X11:
 
           ssh -X <user>@<location> "./show"
+
+**Note:** By default **make install_doc** or **make show** copy the documentation *PDF* with the default project name in your **home** directory. You can define that target file with:
+
+          cmake <rest of options> -DDOC_PDF=<your path & name, ending in .pdf> ..
+
 
 ## Development details
 
@@ -194,15 +199,3 @@ To use **NetBeans** don't forget to configure a *cmake* project with *custom* **
  - -G "MSYS Makefiles" -DONLY_DOC=TRUE for only documentation on **Windows**
 
 **Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use "-lc" instead of just "-c" for its /bin/bash flag. 
-
-## GIT Commit Hash 
-
-In order to add the specific **git commit hash** into code & documentation, *templates* are defined in the *template* folder for **Doxyfile**, **header.tex** & **version.h** files.
-
-![\image latex image/version.png width=400px](image/version.png)
-
-In order to **speed up** local compilations and let us hardcode our locally generated files, it's possible to instruct *cmake* to use this hardcoded header instead of usual GIT one.
-
-The parameter to pass onto **cmake** is **VERSION_HARDCODED**:
-
-          cmake <rest of options> -DVERSION_HARDCODED=TRUE ..

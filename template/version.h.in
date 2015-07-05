@@ -14,7 +14,7 @@
 ///           strings <binary> | findstr VERSION 
 ///           strings <binary> | findstr GIT_DETAILS 
 ///
-/// @startuml ../image/version.png
+/// @startuml version.png
 /// hide footbox
 /// "git\ncommit" -> "git\nlog": create git commit hash 
 /// "git\nlog" --> "make\ngit_commit_hash": read git commit_hash

@@ -130,15 +130,20 @@ find_package(Doxygen)
 if(DOXYGEN_FOUND)
 
    # TARGET
-   set(PDF_FILE $ENV{HOME}/${CMAKE_PROJECT_NAME}.pdf)
+   set(TMP_PDF_FILE ${PROJECT_BINARY_DIR}/${CMAKE_PROJECT_NAME}.pdf)
+   if(${DOC_PDF} MATCHES ".*pdf$")
+     set(PDF_FILE "${DOC_PDF}")
+   else()
+     set(PDF_FILE $ENV{HOME}/${CMAKE_PROJECT_NAME}.pdf)
+   endif()
 
    if(APPLE)
 
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
-       set(PLANTUML java -jar $ENV{PLANTUMLJAR})
+       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -o ${CMAKE_SOURCE_DIR}/image)
      else()
-       set(PLANTUML java -jar /opt/plantuml/plantuml.jar)
+       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -o ${CMAKE_SOURCE_DIR}/image)
      endif()
 
      ### PDF Reader 
@@ -162,9 +167,9 @@ if(DOXYGEN_FOUND)
 
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
-       set(PLANTUML java -jar $ENV{PLANTUMLJAR})
+       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -o ${CMAKE_SOURCE_DIR}/image)
      else()
-       set(PLANTUML java -jar /opt/plantuml/plantuml.jar)
+       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -o ${CMAKE_SOURCE_DIR}/image)
      endif()
 
      ### PDF Reader 
@@ -189,9 +194,9 @@ if(DOXYGEN_FOUND)
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
       file(TO_CMAKE_PATH "$ENV{PLANTUMLJAR}" PLANTUMLJAR_CMAKE)
-      set(PLANTUML java -jar ${PLANTUMLJAR_CMAKE})
+      set(PLANTUML java -jar ${PLANTUMLJAR_CMAKE} -o ${CMAKE_SOURCE_DIR}/image)
      else()
-      set(PLANTUML java -jar C:/strawberry/perl/site/bin/plantuml.jar)
+      set(PLANTUML java -jar C:/strawberry/perl/site/bin/plantuml.jar -o ${CMAKE_SOURCE_DIR}/image)
      endif()
 
      ### PDF Reader 
@@ -214,22 +219,25 @@ if(DOXYGEN_FOUND)
  endif()
 
  # make doc
- add_custom_target( doc ${PLANTUML} README.md src/ test/ template/
+ add_custom_target( doc ${PLANTUML} README.md src/ optimize/ test/ template/
    COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile
    COMMAND ${ENV_CMD} ${CMAKE_BUILD_TOOL} -f ${PROJECT_BINARY_DIR}/latex/Makefile -C ${PROJECT_BINARY_DIR}/latex
-   COMMAND ${COPY_DIFF} ${PROJECT_BINARY_DIR}/latex/refman.pdf ${PDF_FILE}
+   COMMAND ${COPY_DIFF} ${PROJECT_BINARY_DIR}/latex/refman.pdf ${TMP_PDF_FILE}
    DEPENDS git_commit_hash 
    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
  )
- 
+
+ # make install_doc
+ add_custom_target( install_doc ${COPY_DIFF} ${TMP_PDF_FILE} ${PDF_FILE} DEPENDS doc )
+
  # make show
  if(APPLE)
-   add_custom_target( show open -a ${PDF_READER} ${PDF_FILE} DEPENDS doc )
+   add_custom_target( show open -a ${PDF_READER} ${PDF_FILE} DEPENDS install_doc )
  elseif(UNIX)
-   add_custom_target( show ${PDF_READER} ${PDF_FILE} DEPENDS doc )
+   add_custom_target( show ${PDF_READER} ${PDF_FILE} DEPENDS install_doc )
  elseif(WIN32)
    message(STATUS "Not fully support for \"make show\" on Windows") # due to error messages after closing that PDF 
-   add_custom_target( show echo "run ~/show (Powershell) or %USERPROFILE%/show (MSDOS)" DEPENDS doc )
+   add_custom_target( show echo "run ~/show (Powershell) or %USERPROFILE%/show (MSDOS)" DEPENDS instal_doc )
  endif()
 	
 endif(DOXYGEN_FOUND)

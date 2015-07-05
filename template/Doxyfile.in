@@ -759,7 +759,6 @@ WARN_LOGFILE           =
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-#INPUT                  = template test optimize src
 INPUT                  = @LOCAL_SOURCE_DIR@ 
 INPUT                  += @LOCAL_SOURCE_DIR@/template 
 INPUT                  += @LOCAL_SOURCE_DIR@/test 
@@ -870,7 +869,8 @@ IMAGE_PATH             = @LOCAL_SOURCE_DIR@/image
 # code is scanned, but not when the output code is generated. If lines are added
 # or removed, the anchors will not be placed correctly.
 
-INPUT_FILTER           = "sed -e \"s/^\!\[\(.*\)\](.*)$/\1/g\"" 
+#INPUT_FILTER           = "sed -e \"s/^\!\[\(.*\)\](.*)$/\1/g\"" 
+INPUT_FILTER           = "sed -e \"s/^\!\[\(.*\)\](.*\/\(.*\.png\))$/\\\\image latex \2 \1/g\"" 
 
 # The FILTER_PATTERNS tag can be used to specify filters on a per file pattern
 # basis. Doxygen will compare the file name with each pattern and apply the
