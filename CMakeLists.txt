@@ -141,9 +141,9 @@ if(DOXYGEN_FOUND)
 
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
-       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -o ${CMAKE_SOURCE_DIR}/image)
+       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -v -o ${CMAKE_SOURCE_DIR}/image)
      else()
-       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -o ${CMAKE_SOURCE_DIR}/image)
+       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -v -o ${CMAKE_SOURCE_DIR}/image)
      endif()
 
      ### PDF Reader 
@@ -167,9 +167,9 @@ if(DOXYGEN_FOUND)
 
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
-       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -o ${CMAKE_SOURCE_DIR}/image)
+       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -v -o ${CMAKE_SOURCE_DIR}/image)
      else()
-       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -o ${CMAKE_SOURCE_DIR}/image)
+       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -v -o ${CMAKE_SOURCE_DIR}/image)
      endif()
 
      ### PDF Reader 
@@ -194,9 +194,9 @@ if(DOXYGEN_FOUND)
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
       file(TO_CMAKE_PATH "$ENV{PLANTUMLJAR}" PLANTUMLJAR_CMAKE)
-      set(PLANTUML java -jar ${PLANTUMLJAR_CMAKE} -o ${CMAKE_SOURCE_DIR}/image)
+      set(PLANTUML java -jar ${PLANTUMLJAR_CMAKE} -v -o ${CMAKE_SOURCE_DIR}/image)
      else()
-      set(PLANTUML java -jar C:/strawberry/perl/site/bin/plantuml.jar -o ${CMAKE_SOURCE_DIR}/image)
+      set(PLANTUML java -jar C:/strawberry/perl/site/bin/plantuml.jar -v -o ${CMAKE_SOURCE_DIR}/image)
      endif()
 
      ### PDF Reader 
@@ -218,11 +218,16 @@ if(DOXYGEN_FOUND)
 
  endif()
 
+ # make image
+ add_custom_target( image ${PLANTUML} README.md src/*.* optimize/*.* test/*.* template/*.* 
+   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+ )
+
  # make doc
- add_custom_target( doc ${PLANTUML} README.md src/ optimize/ test/ template/
-   COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile
+ add_custom_target( doc ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile
    COMMAND ${ENV_CMD} ${CMAKE_BUILD_TOOL} -f ${PROJECT_BINARY_DIR}/latex/Makefile -C ${PROJECT_BINARY_DIR}/latex
    COMMAND ${COPY_DIFF} ${PROJECT_BINARY_DIR}/latex/refman.pdf ${TMP_PDF_FILE}
+   DEPENDS image
    DEPENDS git_commit_hash 
    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
  )

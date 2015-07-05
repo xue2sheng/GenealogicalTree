@@ -75,26 +75,6 @@ Usual commands:
 
 Optionally you can invoke *make install* to install binaries or *make install_doc* / *make show* to install / preview documentation.
 
-![width=450px](image/cmake.png)
-
-<!---
-@startuml cmake.png
-left to right direction
-(version.h) <|-- (template\nCMakeLists.txt)
-(Doxyfile) <|-- (template\nCMakeLists.txt) : generate  
-(header.tex) <|-- (template\nCMakeLists.txt)
-(template\nCMakeLists.txt) <.. (version.h.in)
-(template\nCMakeLists.txt) <.. (Doxyfile.in) : template 
-(template\nCMakeLists.txt) <.. (header.tex.in)
-(Doxyfile) <-- (header.tex) : details
-(root\nCMakeLists.txt) <-- (version.h) 
-(root\nCMakeLists.txt) <-- (Doxyfile) : Git\nCommit\nHash
-(Doxyfile) <.. (several\nREADME.md) : include
-note left of (root\nCMakeLists.txt): **binaries**\nmake\nmake install
-note left of (root\nCMakeLists.txt): **documents**\nmake doc\nmake show 
-@enduml
---->
-
 **Note:** If you happen to work with *OSX* and [Homebrew](http://brew.sh), don't forget to invoke *cmake* pointing to the **GNU** compiler:
 
           cmake -DCMAKE_CXX_COMPILER=/usr/local/bin/g++-5 ..
