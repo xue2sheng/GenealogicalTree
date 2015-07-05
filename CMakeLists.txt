@@ -37,7 +37,7 @@ if(ONLY_DOC)
 
   ### Windows default make not good enough
   if(NOT ${CMAKE_GENERATOR} MATCHES "MSYS Makefiles") # another similar option "MinGW Makefiles"
-    message(WARNING "Expected MinGW generator: cmake -G \"MSYS Makefiles\" ..")
+    message(WARNING "Expected MSYS generator: cmake -G \"MSYS Makefiles\" ..")
   endif()
 
  endif(APPLE)
@@ -90,8 +90,8 @@ else(ONLY_DOC)
 endif(ONLY_DOC)
 
 # Useful commands 
-set(INVOKE_CMAKE_SCRIPT ${CMAKE_COMMAND} -P) 
-set(INVOKE_CMAKE_SCRIPT_HARDCODED ${CMAKE_COMMAND} -DVERSION_HARDCODED=TRUE -P) 
+set(INVOKE_CMAKE_SCRIPT ${CMAKE_COMMAND} -DLOCAL_SOURCE_DIR="${CMAKE_SOURCE_DIR}" -P) 
+set(INVOKE_CMAKE_SCRIPT_HARDCODED ${CMAKE_COMMAND} -DLOCAL_SOURCE_DIR="${CMAKE_SOURCE_DIR}" -DVERSION_HARDCODED=TRUE -P) 
 set(COPY_DIFF ${CMAKE_COMMAND} -E copy_if_different) 
 set(REMOVE_DIR ${CMAKE_COMMAND} -E remove_directory)
 set(REMOVE ${CMAKE_COMMAND} -E remove -f)
@@ -101,24 +101,26 @@ set(ENV_CMD ${CMAKE_COMMAND} -E env ${EXTRA_ARG})
 add_subdirectory(${PROJECT_SOURCE_DIR}/template)
 if(VERSION_HARDCODED)
   # clean & regenerate git commit hash
-  add_custom_target(clean_git_commit_hash ${REMOVE} ${PROJECT_SOURCE_DIR}/Doxyfile
-   COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/header.tex
-   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
+  add_custom_target(clean_git_commit_hash ${REMOVE} ${PROJECT_BINARY_DIR}/Doxyfile
+   COMMAND ${REMOVE} ${PROJECT_BINARY_DIR}/header.tex
+   COMMAND ${REMOVE_DIR} ${PROJECT_BINARY_DIR}/latex
+   WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
   )
   add_custom_target(git_commit_hash ${INVOKE_CMAKE_SCRIPT_HARDCODED} ${PROJECT_SOURCE_DIR}/template/CMakeLists.txt 
     DEPENDS clean_git_commit_hash 
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
   )
 else()
   # clean & regenerate git commit hash
-  add_custom_target(clean_git_commit_hash ${REMOVE} ${PROJECT_SOURCE_DIR}/Doxyfile
+  add_custom_target(clean_git_commit_hash ${REMOVE} ${PROJECT_BINARY_DIR}/Doxyfile
+   COMMAND ${REMOVE} ${PROJECT_BINARY_DIR}/header.tex
+   COMMAND ${REMOVE_DIR} ${PROJECT_BINARY_DIR}/latex
    COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/src/version.h
-   COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/header.tex
-   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
+   WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
   )
   add_custom_target(git_commit_hash ${INVOKE_CMAKE_SCRIPT} ${PROJECT_SOURCE_DIR}/template/CMakeLists.txt
     DEPENDS clean_git_commit_hash 
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/template
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
   )
 endif(VERSION_HARDCODED)
 
@@ -128,7 +130,7 @@ find_package(Doxygen)
 if(DOXYGEN_FOUND)
 
    # TARGET
-   set(PDF_FILE ${PROJECT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}.pdf)
+   set(PDF_FILE $ENV{HOME}/${CMAKE_PROJECT_NAME}.pdf)
 
    if(APPLE)
 
@@ -213,13 +215,9 @@ if(DOXYGEN_FOUND)
 
  # make doc
  add_custom_target( doc ${PLANTUML} README.md src/ test/ template/
-   COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_SOURCE_DIR}/Doxyfile
-   COMMAND ${ENV_CMD} ${CMAKE_BUILD_TOOL} -f ${PROJECT_SOURCE_DIR}/latex/Makefile -C ${PROJECT_SOURCE_DIR}/latex
-   COMMAND ${COPY_DIFF} ${PROJECT_SOURCE_DIR}/latex/refman.pdf ${PDF_FILE}
-   COMMAND ${REMOVE_DIR} ${PROJECT_SOURCE_DIR}/latex
-   COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/Doxyfile
-   COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/header.tex
-   COMMAND ${REMOVE} ${PROJECT_SOURCE_DIR}/doxygen_sqlite3.db
+   COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile
+   COMMAND ${ENV_CMD} ${CMAKE_BUILD_TOOL} -f ${PROJECT_BINARY_DIR}/latex/Makefile -C ${PROJECT_BINARY_DIR}/latex
+   COMMAND ${COPY_DIFF} ${PROJECT_BINARY_DIR}/latex/refman.pdf ${PDF_FILE}
    DEPENDS git_commit_hash 
    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
  )

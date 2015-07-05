@@ -17,7 +17,9 @@ image/
 src/version.h
 
 # Doxyfile should be created by cmake with git info
-Doxyfile
+*Doxyfile
+*header.tex
+*doxygen_sqlite3.db
 
 # Compiled Object files
 *.slo

@@ -7,20 +7,31 @@ set(REMOVE_DIR ${CMAKE_COMMAND} -E remove_directory)
 set(REMOVE ${CMAKE_COMMAND} -E remove -f)
 set(ENV_CMD ${CMAKE_COMMAND} -E env ${EXTRA_ARG})
 
+#message(STATUS "At /template CMAKE_CURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}")
+#message(STATUS "At /template CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
+
+if("${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
+ # It's expected a LOCAL_SOURCE_DIR=<valid path> commandline parameter
+ set(TEMPLATE_DIR "${LOCAL_SOURCE_DIR}/template")
+ set(SRC_DIR "${LOCAL_SOURCE_DIR}/src")
+else()
+ set(TEMPLATE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+ set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
+endif()
+
 ## Working directories ##
-set(GIT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/..")
-set(DOXYFILE_IN "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in")
-set(DOXYFILE_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../Doxyfile")
-set(HEADER_IN "${CMAKE_CURRENT_SOURCE_DIR}/header.tex.in")
-set(HEADER_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../header.tex")
+set(GIT_DIR "${CMAKE_SOURCE_DIR}")
+set(DOXYFILE_IN "${TEMPLATE_DIR}/Doxyfile.in")
+set(DOXYFILE_OUT "${CMAKE_BINARY_DIR}/Doxyfile")
+set(HEADER_IN "${TEMPLATE_DIR}/header.tex.in")
+set(CMAKE_HEADER_OUT "${CMAKE_BINARY_DIR}/header.tex")
 
 if(VERSION_HARDCODED)
-   set(VERSION_IN "${CMAKE_CURRENT_SOURCE_DIR}/version_hardcoded.h.in")
-   set(VERSION_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../src/version.h") 
+   set(VERSION_IN "${TEMPLATE_DIR}/version_hardcoded.h.in")
 else()
-   set(VERSION_IN "${CMAKE_CURRENT_SOURCE_DIR}/version.h.in")
-   set(VERSION_OUT "${CMAKE_CURRENT_SOURCE_DIR}/../src/version.h")
+   set(VERSION_IN "${TEMPLATE_DIR}/version.h.in")
 endif()
+set(VERSION_OUT "${SRC_DIR}/version.h") 
 
 ## System Info
 if(WIN32)
@@ -63,7 +74,7 @@ string(REGEX REPLACE "_" "-" GIT_SYSTEM ${GIT_SYSTEM})
 
 configure_file(${VERSION_IN} ${VERSION_OUT})
 configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT})
-configure_file(${HEADER_IN} ${HEADER_OUT})
+configure_file(${HEADER_IN} ${CMAKE_HEADER_OUT})
 
 message(STATUS "GIT_DETAILS=\"${CMAKE_GIT_DETAILS}\"")
 message(STATUS "GIT_SYSTEM=\"${GIT_SYSTEM}\"")
