@@ -33,7 +33,6 @@ if(ONLY_DOC)
     file(TO_CMAKE_PATH "C:\\MinGW\\bin\\make.exe" CMAKE_BUILD_TOOL)
   endif()
   message(STATUS "CMAKE_BUILD_TOOL = ${CMAKE_BUILD_TOOL}")
- 
 
   ### Windows default make not good enough
   if(NOT ${CMAKE_GENERATOR} MATCHES "MSYS Makefiles") # another similar option "MinGW Makefiles"
@@ -223,8 +222,8 @@ if(DOXYGEN_FOUND)
  endif()
 
  # make image
- add_custom_target( image ${PLANTUML} README.md src/*.* optimize/*.* test/*.* template/*.* 
-   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+ add_custom_target( image ${INVOKE_CMAKE_SCRIPT} ${PROJECT_SOURCE_DIR}/image/CMakeLists.txt
+    WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
  )
 
  # make doc

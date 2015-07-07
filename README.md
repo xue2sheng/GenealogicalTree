@@ -16,10 +16,11 @@ Program should be able to **find all the descendant with name Bob for all the as
 Instead of starting directly with the problem core, don't test thoroughly edge cases, leaping into too early optimization, don't document your results/decisions/mistakes and ending with an app that only run partially on your development environment, the **aproach** will be the opposite one. 
 
 1. Ensure a minimum of portability on different environments as hinted in the next section.
-2. [Use templates to gather external information](template/README.md) to document as much automatically as possible.
-3. [Write tests](test/README.md) to cover your app and let you  optimize knowing you're not breaking previous development.
-4. [Measure your application](optimize/README.md) in order to compare improvements/regressions during the optimization stage.
-5. [Solve the core problem](src/README.md) in the most simple and maintainable way at our disposal. 
+2. [Generate diagrams from code/documentation](image/README.md) to be able to track down all the changes.
+3. [Use templates to gather external information](template/README.md) to document as much automatically as possible.
+4. [Write tests](test/README.md) to cover your app and let you  optimize knowing you're not breaking previous development.
+5. [Measure your application](optimize/README.md) in order to compare improvements/regressions during the optimization stage.
+6. [Solve the core problem](src/README.md) in the most simple and maintainable way at our disposal. 
 
 ![width=400px](image/approach.png)
 
@@ -82,14 +83,18 @@ But then you might want to [compile newer *boost* libraries](http://www.boost.or
 
 Another typical Linux platform is **CentOS**. Their [*gcc*](https://www.vultr.com/docs/how-to-install-gcc-on-centos-6) and [*cmake*](http://www.linuxfromscratch.org/blfs/view/svn/general/cmake.html) are very conservative, even for *CentOS 7*, so compile newer ones from **source code** might be a possibility:
 
-- CMake: Download *tar.gz* with latest version and *untar* its source code
+#### CMake: 
+
+Download *tar.gz* with latest version and *untar* its source code
 
           cd <building directory>
           ./bootstrap --prefix=/opt/cmake --mandir=/opt/cmake/man --docdir=/opt/cmake/doc
           make
           sudo make install
 
-- Compiler: it's going to take long so try to use all the cores you got
+#### Compiler
+
+It's going to take long so try to use all the cores you got
 
           mkdir ~/sourceInstallations
           cd ~/sourceInstallations
@@ -99,7 +104,7 @@ Another typical Linux platform is **CentOS**. Their [*gcc*](https://www.vultr.co
           cd ~/sourceInstallations
           mkdir gcc_5_1_0_release_build/
           cd gcc_5_1_0_release_build/
-          ../gcc_5_1_0_release/configure --enable-lenguages=c,c++ --prefix=/opt \
+          ../gcc_5_1_0_release/configure --enable-lenguages=c,c++ --prefix=/opt/gcc \
                                          --program-suffix=-5 --disable-multilib 
           make -j <number of cores> 
           sudo make install
@@ -108,20 +113,40 @@ Another typical Linux platform is **CentOS**. Their [*gcc*](https://www.vultr.co
           sudo ln -s /opt/gcc/bin/gcc-5 gcc-5
           sudo ln -s /opt/gcc/bin/g++-5 g++-5
 
-- Boost: a long compilation that needs to [be told where](http://www.boost.org/build/doc/html/bbv2/overview/configuration.html) to get the proper [toolset](http://hnrkptrsn.github.io/2013/02/26/c11-and-boost-setup-guide/). Don't forget to edit  *user-config.jam* to point to **g++-5**, i.e., *using gcc : : /opt/gcc/bin/g++-5* and *using gcc : 5 : /opt/gcc/bin/g++-5*
+#### Boost
+
+A long compilation that needs to [be told where](http://www.boost.org/build/doc/html/bbv2/overview/configuration.html) to get the proper [toolset](http://hnrkptrsn.github.io/2013/02/26/c11-and-boost-setup-guide/). 
 
           cd <folder with source code>
           cp tools/build/example/user-config.jam .
-          <edit user-config.jam to point g++-5>
+
+Don't forget to edit  *user-config.jam* to point to **g++-5**, i.e., *using gcc : 5 : /opt/gcc/bin/g++-5*
+
+          using gcc : 5 : /opt/gcc/bin/g++-5
+          :
+          <dll-path>/opt/gcc/lib64:/opt/gcc/boost/lib
+          <harcode-dll-paths>true
+          <cxxflags>-std=c++14
+          <cxxflags>-Wl,-rpath=/opt/gcc/lib64:/opt/gcc/boost/lib
+          <linkflags>-rpath=/opt/gcc/lib64:/opt/gcc/boost/lib
+          ;
+
+**Note:** Not all the targets might be created. If some of the missing ones are required for your apps, try to hack *boost* compilation scripts.
+
           ./bootstrap.sh --prefix=/opt/gcc/boost --with-toolset=gcc
           sudo ./b2 -j8 install toolset=gcc-5 --prefix=/opt/gcc/boost \
                     threading=multi define=BOOST_SYSTEM_NO_DEPRECATED stage release
- 
-**Note:** Not all the targets might be created. If some of the missing ones are required for your apps, try to hack *boost* compilation scripts.
 
 **Note:** Take into account when compile with 'g++-5' on one Linux platform that got its own previous compiler version, you should let know to the **linker** where to get 'g++-5' libraries. Try to avoid **LD_LIBRARY_PATH** and use instead **RPATH**:
 
-          /opt/gcc/bin/g++-5 -pthread —std=c++14 -Wl,-rpath=/opt/gcc/lib64 <rest of options> 
+          g++-5 -pthread —std=c++14 -Wl,-rpath=/opt/gcc/lib64 <rest of options> 
+
+In case of your linking against *boost* generates too many *auto_ptr* deprecated warnings:
+
+          g++-5 -pthread -std=c++14 -Wno-deprecated -Wl,-rpath=/opt/gcc/lib64:/opt/gcc/boost/lib \
+                -I/opt/gcc/boost/include -L/opt/gcc/boost/lib -lboost_program_options <rest of options.
+
+**Hint:** If you generate those *cmake*, *gcc* and *boost* on one machine and then copy them onto another, remember that there is [**soft links** involved](http://www.golinuxhub.com/2013/12/how-to-preserve-symbolic-links-with-tar.html).
 
 ### OSX type 
 

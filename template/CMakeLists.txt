@@ -7,9 +7,6 @@ set(REMOVE_DIR ${CMAKE_COMMAND} -E remove_directory)
 set(REMOVE ${CMAKE_COMMAND} -E remove -f)
 set(ENV_CMD ${CMAKE_COMMAND} -E env ${EXTRA_ARG})
 
-#message(STATUS "At /template CMAKE_CURRENT_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}")
-#message(STATUS "At /template CMAKE_SOURCE_DIR=${CMAKE_SOURCE_DIR}")
-
 if("${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
  # It's expected a LOCAL_SOURCE_DIR=<valid path> commandline parameter
  set(TEMPLATE_DIR "${LOCAL_SOURCE_DIR}/template")
@@ -70,7 +67,6 @@ endif(VERSION_HARDCODED)
 ## WARNING: LaTeX special characteres, as 'underscore', must be avoided
 string(REGEX REPLACE "_" "-" CMAKE_GIT_DETAILS ${CMAKE_GIT_DETAILS})
 string(REGEX REPLACE "_" "-" GIT_SYSTEM ${GIT_SYSTEM})
-
 
 configure_file(${VERSION_IN} ${VERSION_OUT})
 configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT})
