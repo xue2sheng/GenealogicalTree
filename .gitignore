@@ -1,6 +1,5 @@
 ## project ##
 build/
-latex/
 bin/
 *.log
 *~
@@ -10,7 +9,6 @@ bin/
 *.tex
 nbproject/
 .metadata/
-*.pdf
 
 # version.h should be created by cmake with git info
 src/version.h

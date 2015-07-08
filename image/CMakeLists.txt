@@ -58,10 +58,10 @@ execute_process(
 file(GLOB IMAGE_LIST RELATIVE ${BUILD_IMAGE_DIR} ${BUILD_IMAGE_DIR}/*.png)
 
 #### if new ###
+#### TODO: compare metadata ####
 foreach(PNG ${IMAGE_LIST})
   execute_process(
    COMMAND ${COPY_DIFF} ${BUILD_IMAGE_DIR}/${PNG} ${IMAGE_DIR}/${PNG}
-   RESULT_VARIABLE RESULT
    WORKING_DIRECTORY ${CMAKE_BINARY_DIR} 
   )
 endforeach()
