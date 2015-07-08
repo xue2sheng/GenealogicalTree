@@ -760,6 +760,8 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = @LOCAL_SOURCE_DIR@ 
+INPUT                  += @LOCAL_SOURCE_DIR@/doc 
+INPUT                  += @LOCAL_SOURCE_DIR@/image 
 INPUT                  += @LOCAL_SOURCE_DIR@/template 
 INPUT                  += @LOCAL_SOURCE_DIR@/test 
 INPUT                  += @LOCAL_SOURCE_DIR@/optimize 

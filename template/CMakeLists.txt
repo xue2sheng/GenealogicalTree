@@ -66,7 +66,9 @@ endif(VERSION_HARDCODED)
 
 ## WARNING: LaTeX special characteres, as 'underscore', must be avoided
 string(REGEX REPLACE "_" "-" CMAKE_GIT_DETAILS ${CMAKE_GIT_DETAILS})
+string(REGEX REPLACE "&" " and " CMAKE_GIT_DETAILS ${CMAKE_GIT_DETAILS})
 string(REGEX REPLACE "_" "-" GIT_SYSTEM ${GIT_SYSTEM})
+string(REGEX REPLACE "&" " and " GIT_SYSTEM ${GIT_SYSTEM})
 
 configure_file(${VERSION_IN} ${VERSION_OUT})
 configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT})
