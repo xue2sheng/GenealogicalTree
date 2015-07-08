@@ -27,10 +27,10 @@ Instead of starting directly with the problem core, don't test thoroughly edge c
 <!---
 @startuml approach.png
 left to right direction
-(Portability and Documentation\napplication\n--\ndoc\README.md) as (Doc)
-(Image\napplication\n--\nimage\README.md) as (Image)
-(Template\napplication\n--\ntemplate\README.md) as (Template)
-(Test\napplication\n--\ntest\README.md) as (Test)
+(Portability and\nDocumentation\n--\ndoc\README.md) as (Doc)
+(Diagrams\n--\nimage\README.md) as (Image)
+(Additional\ninformation\n--\ntemplate\README.md) as (Template)
+(Test\nresources\n--\ntest\README.md) as (Test)
 (Summary\n--\nREADME.md) as (Summary)
 (Measure\napplication\n--\noptimize\README.md) as (Measure) 
 (Core\napplication\n--\nsrc\README.md) as (Core)
