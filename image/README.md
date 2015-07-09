@@ -1,5 +1,4 @@
-Generate diagrams from code or documentation 
-============================================
+# Generate diagrams from code or documentation 
 
 Diagrams related directly to the current code are a key part of any kind of technical documentation. As well being able to track down partial changes **inside** of those images along the code itself right out off the bat it's a huge improvement.
 

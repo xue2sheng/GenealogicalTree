@@ -71,6 +71,8 @@ if(DOXYGEN_FOUND)
 
    # TARGET
    set(TMP_PDF_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_PROJECT_NAME}.pdf)
+   set(TMP_HTML_DIR ${CMAKE_CURRENT_SOURCE_DIR}/html)
+
    if(${DOC_PDF} MATCHES ".*pdf$")
      set(PDF_FILE "${DOC_PDF}")
    else()
@@ -81,7 +83,17 @@ if(DOXYGEN_FOUND)
      endif(WIN32)
    endif()
 
-   if(APPLE)
+   if(${DOC_HTML} MATCHES "..*$")
+     set(HTML_DIR "${DOC_HTML}")
+   else()
+     if(WIN32)
+       set(HTML_DIR "C:/Users/Public/${CMAKE_PROJECT_NAME}")
+     else()
+       set(HTML_DIR $ENV{HOME}/${CMAKE_PROJECT_NAME})
+     endif(WIN32)
+   endif()
+
+  if(APPLE)
 
      ### PDF Reader 
      if($ENV{PDF_READER} MATCHES "..*")
@@ -149,13 +161,17 @@ if(DOXYGEN_FOUND)
  add_custom_target( doc ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile
    COMMAND ${ENV_CMD} ${CMAKE_BUILD_TOOL} -f ${PROJECT_BINARY_DIR}/latex/Makefile -C ${PROJECT_BINARY_DIR}/latex
    COMMAND ${COPY_DIFF} ${PROJECT_BINARY_DIR}/latex/refman.pdf ${TMP_PDF_FILE}
+#   COMMAND ${COPY_DIFF} ${PROJECT_BINARY_DIR}/latex/html ${TMP_HTML_DIR}
    DEPENDS image
    DEPENDS git_commit_hash 
    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
  )
 
  # make install_doc
- add_custom_target( install_doc ${COPY_DIFF} ${TMP_PDF_FILE} ${PDF_FILE} DEPENDS doc )
+ add_custom_target( install_doc ${COPY_DIFF} ${TMP_PDF_FILE} ${PDF_FILE} 
+  # COMMAND ${COPY_DIFF} ${TMP_HTML_DIR} ${HTML_DIR} 
+   DEPENDS doc
+ )
 
  # make show
  if(APPLE)
