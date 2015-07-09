@@ -25,6 +25,12 @@ If you want to use latest *compiler*, you can use [an extra repository](http://a
 
 But then you might want to [compile newer *boost* libraries](http://www.boost.org/doc/libs/1_58_0/more/getting_started/unix-variants.html) with that compiler.
 
+As well you can configure your system to grab *deb* packages from *unstable* repositories only for specific ones, i.e. *cmake*. In this case, don't forget to "protect" your stable packages defining properly your [policy preferences](www.binarytides.com/enable-testing-repo-debian):
+
+          cmake --version <no good enough>
+          sudo apt-cache policy cmake <sid version good enough>
+          sudo apt-get install cmake/sid
+
 
 ### RPM Linux type
 
