@@ -1,5 +1,4 @@
-Genealogical Tree
-=================
+# Genealogical Tree 
 
 ## Summary 
 
@@ -52,4 +51,3 @@ note left of (Test): Test boost lib
 --->
 
 No doubt this approach is an overkill for a pet project but it's way more realistic for big, long C++ ones. 
-

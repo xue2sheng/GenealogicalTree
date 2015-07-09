@@ -18,6 +18,9 @@ src/version.h
 *header.tex
 *doxygen_sqlite3.db
 
+# don't "push" doxygen generated html pages
+doc/html/
+
 # Compiled Object files
 *.slo
 *.lo

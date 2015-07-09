@@ -1,5 +1,4 @@
-Templates to gather external information
-========================================
+# Templates to gather external information
 
 The basic external information to be included is **GIT COMMIT HASH**. This way *code* and *documentation* are related by this piece of information.
 

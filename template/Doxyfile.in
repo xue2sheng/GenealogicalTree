@@ -871,8 +871,7 @@ IMAGE_PATH             = @LOCAL_SOURCE_DIR@/image
 # code is scanned, but not when the output code is generated. If lines are added
 # or removed, the anchors will not be placed correctly.
 
-#INPUT_FILTER           = "sed -e \"s/^\!\[\(.*\)\](.*\/\(.*\.png\))$/\\\\image latex \2 \1/g\" -e \"s/^[#]*\(.*\)<!---[ ]*\(.*\)[ ]*--->$/\\\\\2 \1/g\"" 
-INPUT_FILTER           = "sed -e \"s/^\!\[\(.*\)\](.*\/\(.*\.png\))$/\\\\image latex \2 \1/g\" -e \"s/^## \([a-zA-Z0-1]\)\(.*\)$/\\\\section section\1 \1\2/g\" -e \"s/^### \([a-zA-Z0-1]\)\(.*\)$/\\\\subsection subsection\1 \1\2/g\"" 
+INPUT_FILTER           = "sed -e \"s/^# \(Genealogical Tree\)\(.*\)$/# \1 {#index}/g\" -e \"s/^\!\[\(.*\)\](.*\/\(.*\.png\))$/\\\\image latex \2 \1 \\\\image html \2/g\" -e \"s/^## \([a-zA-Z0-1]\)\(.*\)$/\\\\section section\1 \1\2/g\" -e \"s/^### \([a-zA-Z0-1]\)\(.*\)$/\\\\subsection subsection\1 \1\2/g\"" 
 
 # The FILTER_PATTERNS tag can be used to specify filters on a per file pattern
 # basis. Doxygen will compare the file name with each pattern and apply the
@@ -1024,7 +1023,7 @@ IGNORE_PREFIX          =
 # If the GENERATE_HTML tag is set to YES, doxygen will generate HTML output
 # The default value is: YES.
 
-GENERATE_HTML          = NO 
+GENERATE_HTML          = YES 
 
 # The HTML_OUTPUT tag is used to specify where the HTML docs will be put. If a
 # relative path is entered the value of OUTPUT_DIRECTORY will be put in front of

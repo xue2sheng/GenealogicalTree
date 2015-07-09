@@ -1,5 +1,4 @@
-Portability and documentation
-=============================
+# Portability and documentation
 
 A Modern C++ GNU compiler, g++ 4.9.2 or above, and a recent cmake, 3.1 or above, are the minimum. As well a valid *boost* library is supposed to be installed.
 

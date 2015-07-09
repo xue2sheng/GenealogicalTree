@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.1)
 # Useful commands 
 set(INVOKE_CMAKE_SCRIPT ${CMAKE_COMMAND} -P) 
 set(COPY_DIFF ${CMAKE_COMMAND} -E copy_if_different) 
+set(COPY_DIR ${CMAKE_COMMAND} -E copy_directory) 
 set(REMOVE_DIR ${CMAKE_COMMAND} -E remove_directory)
 set(REMOVE ${CMAKE_COMMAND} -E remove -f)
 set(ENV_CMD ${CMAKE_COMMAND} -E env ${EXTRA_ARG})

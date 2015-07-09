@@ -1,5 +1,4 @@
-Application Core Code
-=====================
+# Application Core Code
 
 Source folder for headears & code files directly involved with the core problem. 
 
