@@ -3,11 +3,11 @@ Portability and documentation
 
 A Modern C++ GNU compiler, g++ 4.9.2 or above, and a recent cmake, 3.1 or above, are the minimum. As well a valid *boost* library is supposed to be installed.
 
-## Platforms <!-- section por -->
+## Platforms 
 
 Several platforms were tested to some extent: 
 
-### DEB Linux Type <!-- subsection deb -->
+### DEB Linux Type 
 
 Regarding to documentation, *doxygen*, *latex*, *graphviz* and *plantuml.jar* are needed. For example, if you work with *#Xubuntu** 15.04 or its **Docker** equivalent, the following commands might do the trick for you:
     
@@ -30,7 +30,7 @@ If you want to use latest *compiler*, you can use [an extra repository](http://a
 But then you might want to [compile newer *boost* libraries](http://www.boost.org/doc/libs/1_58_0/more/getting_started/unix-variants.html) with that compiler.
 
 
-### RPM Linux type <!-- subsection rpm -->
+### RPM Linux type 
 
 Another typical Linux platform is **CentOS**. Their [*gcc*](https://www.vultr.com/docs/how-to-install-gcc-on-centos-6) and [*cmake*](http://www.linuxfromscratch.org/blfs/view/svn/general/cmake.html) are very conservative, even for *CentOS 7*, so compile newer ones from **source code** might be a possibility:
 
@@ -99,7 +99,7 @@ In case of your linking against *boost* generates too many *auto_ptr* deprecated
 
 **Hint:** If you generate those *cmake*, *gcc* and *boost* on one machine and then copy them onto another, remember that there is [**soft links** involved](http://www.golinuxhub.com/2013/12/how-to-preserve-symbolic-links-with-tar.html).
 
-### OSX type <!-- subsection osx --> 
+### OSX type  
 
 In order to use *GNU* compiler instead of *XCode* **clang** one, there are several options. The one followed for this project was [Homebrew](http://brew.sh).
 
@@ -108,7 +108,7 @@ In order to use *GNU* compiler instead of *XCode* **clang** one, there are sever
           brew install gcc
           brew install boost --cc=gcc-5
 
-### Windows type <!-- subsection windows -->
+### Windows type 
 
 As well there are several options to get your *GNU* chaintool ready on windows instead of *Visual Studio*. For example, [Git](https://git-scm.com/download/win) and [MinGW](http://nuwen.net/mingw.html). 
 
@@ -118,7 +118,7 @@ Another option might be following [MSYS2](https://github.com/gtorrent/gtorrent-c
           pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-pkgconf make
           pacman -S git mingw-w64-x86_64-cmake-git
 
-## Generate binaries & documentation <!-- section bin -->
+## Working with binaries & documentation 
 
 Usual commands:
 
@@ -140,7 +140,7 @@ Optionally you can invoke *make install* to install binaries or *make install_do
 
 As well a script, called **show** or something similar, will be created in your *home* directory as a shortcut for generating & viewing documentation. Don't hesitate to use it as a *template* for your specific environment.
 
-## Generate only documentation <!-- section only -->
+## Generate only documentation 
 
 Similar commands to the previous ones, just the compiler is not required:
 
@@ -165,7 +165,7 @@ As well, if you installed the documentation utility with **make show**, you're s
 
           cmake <rest of options> -DDOC_PDF=<your path & name, ending in .pdf> ..
 
-## IDE hints <!-- section ide -->
+## IDE hints 
 
 To use **NetBeans** don't forget to configure a *cmake* project with *custom* **build** folder. Add at that moment any extra customization in the command line used by *cmake* instruction. For example:
 
@@ -176,11 +176,11 @@ To use **NetBeans** don't forget to configure a *cmake* project with *custom* **
 
 **Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use "-lc" instead of just "-c" for its /bin/bash flag. 
 
-## Development details <!-- section details -->
+## Development details
 
 In order to generate binaries & documentation, the following versions were used:
 
-### For code <!-- subsection code -->
+### Code 
 
 Pay attention to *cmake* and *gcc* versions. A minimum is required to work on several O.S. using modern C++. Feel free to locally hack **CMakeLists.txt** to meet your needs.
 
@@ -202,7 +202,7 @@ Pay attention to *cmake* and *gcc* versions. A minimum is required to work on se
  - **gcc** *5.1*
  - **boost** *1.58*
 
-### For documentation <!-- subsection doc -->
+### Documentation 
 
 Environment variables to locate PlantUML *jar* and default *PDF* viewer can be defined to overwrite default values. See **CMakeLists.txt** for further information on your platform.
 
@@ -227,5 +227,6 @@ Environment variables to locate PlantUML *jar* and default *PDF* viewer can be d
  - **graphviz/dot** *2.38.0*
  - **java/plantuml** *1.8.0_45/8026*
 
-**Note:** Don't forget configure *Doxyfile* and *CMakeLists.txt* to use **README.md** as *Main Page* for **latex** documentation. 
+**Note:** Don't forget to configure *Doxyfile* and *CMakeLists.txt* to use **README.md** as *Main Page* for **latex** documentation. 
 
+**Note:** Don't repeat intial word at sections & subsections in the **README.md** files. That first word will be used as internal **ref** for **latex** documentation.

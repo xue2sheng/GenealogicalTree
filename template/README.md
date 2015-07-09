@@ -27,7 +27,7 @@ As well information on the machine where **cmake** was invoked is collected.
 
 **Note:** Take into account that **the last commit** information will be processed; if there are new changes not yet committed, they will be included anyway. So in order to generate *final official* documentation first commit all your changes, generate the documentation and, if needed, commit that generated document.
 
-## GIT Commit Hash  <!-- section git -->
+## GIT Commit Hash  
 
 In order to add the specific **git commit hash** into code & documentation, *templates* are defined in the *template* folder for **Doxyfile**, **header.tex** & **version.h** files.
 

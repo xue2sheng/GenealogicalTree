@@ -3,11 +3,11 @@ Application Core Code
 
 Source folder for headears & code files directly involved with the core problem. 
 
-## Simplications <!-- section simp -->
+## Simplications 
 
 Some stepts will be taken in order to circle problem to a manageable number of possibilities
 
-## Realistic limits <!-- subsection lim -->
+## Realistic limits 
 
 First of all, we should grasp a rough idea about which range of numbers to consider:
 
@@ -31,7 +31,7 @@ First of all, we should grasp a rough idea about which range of numbers to consi
 
   Number of villages: [around](http://censusindia.gov.in/Census_Data_2001/Census_data_finder/A_Series/Number_of_Village.htmi) 640000
 
-## Assumptions on numbers <!-- subsection assump -->
+## Assumptions on numbers 
 
 This way we can assume that taking into account around 200 years of sensible information on our ascendants, around 10 generations back in time, we suppose not to deal with more than 4000000000 individuals.  
 
