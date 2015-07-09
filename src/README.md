@@ -3,7 +3,11 @@ Application Core Code
 
 Source folder for headears & code files directly involved with the core problem. 
 
-## Limits
+## Simplications <!-- section simp -->
+
+Some stepts will be taken in order to circle problem to a manageable number of possibilities
+
+## Realistic limits <!-- subsection lim -->
 
 First of all, we should grasp a rough idea about which range of numbers to consider:
 
@@ -27,7 +31,7 @@ First of all, we should grasp a rough idea about which range of numbers to consi
 
   Number of villages: [around](http://censusindia.gov.in/Census_Data_2001/Census_data_finder/A_Series/Number_of_Village.htmi) 640000
 
-## Assumptions on numbers
+## Assumptions on numbers <!-- subsection assump -->
 
 This way we can assume that taking into account around 200 years of sensible information on our ascendants, around 10 generations back in time, we suppose not to deal with more than 4000000000 individuals.  
 
@@ -47,12 +51,3 @@ Translate into C++:
 This way we can use the **first 64 bits of information** as a valid **identification** for the individuals and with the advantage of getting the relevant information to debug first: *name and generation*.
 
 
-## Generated Files
-
-**version.h** is generated with *GIT* information by *cmake*.
-
-But in order to **speed up** local compilations and let us hardcode our locally generated files, it's possible to instruct *cmake* to use this hardcoded header instead of usual GIT one.
-
-The parameter to pass onto **cmake** is **VERSION_HARDCODED**:
-
-          cmake <rest of options> -DVERSION_HARDCODED=TRUE ..

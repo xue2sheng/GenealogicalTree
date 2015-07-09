@@ -1,7 +1,7 @@
 Genealogical Tree
 =================
 
-## Summary
+## Summary <!-- section summary -->
 
 Program should be able to **find all the descendant with name Bob for all the ascendants with name Will on any level of ancestry**. In order to present the capabilities of your app:
 
@@ -11,7 +11,7 @@ Program should be able to **find all the descendant with name Bob for all the as
 - the application should posses tests that are checking possible edge cases and ensure the stability of the application.
 - the designed data structure should ensure optimized search time on following fields: name, last name, date of birth and location.
 
-## Approach
+## Approach <!-- section approach -->
 
 Instead of starting directly with the problem core, don't test thoroughly edge cases, leaping into too early optimization, don't document your results/decisions/mistakes and ending with an app that only run partially on your development environment, the **aproach** will be the opposite one. 
 
