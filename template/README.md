@@ -11,14 +11,14 @@ left to right direction
 (Doxyfile) <|-- (template\nCMakeLists.txt) : generate  
 (header.tex) <|-- (template\nCMakeLists.txt)
 (template\nCMakeLists.txt) <.. (version.h.in)
-(template\nCMakeLists.txt) <.. (Doxyfile.in) : template 
+(template\nCMakeLists.txt) <.. (Doxyfile.in) : template
 (template\nCMakeLists.txt) <.. (header.tex.in)
 (Doxyfile) <-- (header.tex) : details
-(root\nCMakeLists.txt) <-- (version.h) 
+(root\nCMakeLists.txt) <-- (version.h)
 (root\nCMakeLists.txt) <-- (Doxyfile) : Git\nCommit\nHash
 (Doxyfile) <.. (several\nREADME.md) : include
 note left of (root\nCMakeLists.txt): **binaries**\nmake\nmake install
-note left of (root\nCMakeLists.txt): **documents**\nmake doc\nmake show 
+note left of (root\nCMakeLists.txt): **documents**\nmake doc\nmake show
 @enduml
 --->
 
@@ -37,4 +37,3 @@ In order to **speed up** local compilations and let us hardcode our locally gene
 The parameter to pass onto **cmake** is **VERSION_HARDCODED**:
 
           cmake <rest of options> -DVERSION_HARDCODED=TRUE ..
-

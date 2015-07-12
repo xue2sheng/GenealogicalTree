@@ -1,17 +1,17 @@
 # Application Core Code
 
-Source folder for headears & code files directly involved with the core problem. 
+Source folder for headears & code files directly involved with the core problem.
 
-## Simplications 
+## Simplications
 
 Some stepts will be taken in order to circle problem to a manageable number of possibilities
 
-## Realistic limits 
+## Realistic limits
 
 First of all, we should grasp a rough idea about which range of numbers to consider:
 
-- Most Populous Country: China 
-  
+- Most Populous Country: China
+
   Inhabitants: [around](http://www.worldometers.info/world-population/china-population) 1400000000
 
 - Another populous country, culturally diverse: USA
@@ -22,7 +22,7 @@ First of all, we should grasp a rough idea about which range of numbers to consi
 
   Roman Catholic: [around](http://www.irish-genealogy-toolkit.com/Roman-Catholic-baptism.html) 19th century
 
-- Marriageable age: world 
+- Marriageable age: world
 
   Some common value: [around](https://en.wikipedia.org/wiki/Marriageable_age) 20  
 
@@ -30,7 +30,7 @@ First of all, we should grasp a rough idea about which range of numbers to consi
 
   Number of villages: [around](http://censusindia.gov.in/Census_Data_2001/Census_data_finder/A_Series/Number_of_Village.htmi) 640000
 
-## Assumptions on numbers 
+## Assumptions on numbers
 
 This way we can assume that taking into account around 200 years of sensible information on our ascendants, around 10 generations back in time, we suppose not to deal with more than 4000000000 individuals.  
 
@@ -48,5 +48,3 @@ Translate into C++:
 - More information related to a specific subject: extra indexes.
 
 This way we can use the **first 64 bits of information** as a valid **identification** for the individuals and with the advantage of getting the relevant information to debug first: *name and generation*.
-
-

@@ -49,7 +49,7 @@ left to right direction
 note left of (Doc): cmake\ndoxygen\nlatex\nmarkdown
 note left of (Image): cmake\nplantuml
 note left of (Measure): R scripts\nsystemtap
-note left of (Mock): go\nnodejs\njava 
+note left of (Mock): go\nnodejs\njava
 note top of (Core): Graph boost lib
 note left of (Test): Test boost lib
 @enduml

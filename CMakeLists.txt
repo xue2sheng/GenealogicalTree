@@ -17,13 +17,13 @@ else(ONLY_DOC)
   ### Use OSX Homebrew gcc & boost
   message(STATUS "CMAKE_CXX_COMPILER should be \"/usr/local/Cellar/gcc/5.1.0/bin/g++-5\" or similar")
   set(EXTRA_ARG "PATH=\"$ENV{PATH}:/usr/texbin\"") # pdflatex
- 
+
  elseif(UNIX)
   ### Risky bet because it could be Solaris
   message(STATUS "Taking from granted this is a Linux box with evince installed")
-  
+
  elseif(WIN32)
-  ### Supposed BOOST_ROOT, BOOST_INCLUDE & BOOST_LIB defined, i.e. C:\MinGW, C:\MinGW\include && C:\MinGW\lib 
+  ### Supposed BOOST_ROOT, BOOST_INCLUDE & BOOST_LIB defined, i.e. C:\MinGW, C:\MinGW\include && C:\MinGW\lib
   message(STATUS "CMAKE_CXX_COMPILER should be \"C:/MinGW/bin/g++.exe\" or similar")
 
   ### Windows default make not good enough
