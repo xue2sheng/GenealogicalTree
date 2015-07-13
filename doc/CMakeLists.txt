@@ -160,7 +160,7 @@ if(DOXYGEN_FOUND)
 
  # make doc
  add_custom_target( doc ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile
-   COMMAND ${ENV_CMD} ${CMAKE_BUILD_TOOL} -f ${PROJECT_BINARY_DIR}/latex/Makefile -C ${PROJECT_BINARY_DIR}/latex
+   COMMAND ${ENV_CMD} ${CMAKE_BUILD_TOOL} -Wno-dev -f ${PROJECT_BINARY_DIR}/latex/Makefile -C ${PROJECT_BINARY_DIR}/latex
    COMMAND ${COPY_DIFF} ${PROJECT_BINARY_DIR}/latex/refman.pdf ${TMP_PDF_FILE}
    COMMAND ${COPY_DIR} ${PROJECT_BINARY_DIR}/html ${TMP_HTML_DIR}
    DEPENDS image

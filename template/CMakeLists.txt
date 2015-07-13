@@ -31,22 +31,32 @@ else()
 endif()
 set(VERSION_OUT "${SRC_DIR}/version.h") 
 
-## System Info
+## System Info & escape string 
 if(WIN32)
  set(GIT_SYSTEM "$ENV{USERNAME}@$ENV{COMPUTERNAME}")
+ #set(ESC "\\\\\\")
 else()
  site_name(CMAKE_HOSTNAME)
  set(GIT_SYSTEM "$ENV{USER}@${CMAKE_HOSTNAME}")
+ set(ESC "\\")
 endif(WIN32)
 
 if(VERSION_HARDCODED)
 
   ### FAKE info ###
+  set(CMAKE_VERSION_FIRST "0")
+  set(CMAKE_VERSION_MIDDLE "0")
+  set(CMAKE_VERSION_LAST "0")
   set(CMAKE_GIT_DETAILS "0123456 (HEAD, origin/develop, origin/HEAD, develop) FAKE: hardcoded values without using GIT")
   set(CMAKE_GIT_COMMIT_HASH "0123456")
 
   message(STATUS "Using harcoded values, i.e. 0123456, at generated version.h")
 else()
+
+ ### Human Info ###
+ set(CMAKE_VERSION_FIRST "0")
+ set(CMAKE_VERSION_MIDDLE "0")
+ set(CMAKE_VERSION_LAST "2")
 
  #### Git Info ####
  execute_process(
@@ -66,9 +76,7 @@ else()
 endif(VERSION_HARDCODED)
 
 # Extra variables to be used in those templates
-set(CMAKE_VERSION_FIRST "0")
-set(CMAKE_VERSION_MIDDLE "0")
-set(CMAKE_VERSION_LAST "2")
+
 set(DOXYFILE_PROJECT_NUMBER "${CMAKE_VERSION_FIRST}.${CMAKE_VERSION_MIDDLE}.${CMAKE_VERSION_LAST}")
 set(DOXYFILE_PROJECT_NAME "Genealogical Tree")
 set(DOXYFILE_PROJECT_BRIEF "Find all the descendant on any level of ancestry")
@@ -95,8 +103,19 @@ set(DOXYFILE_INPUT07 "${LOCAL_SOURCE_DIR}/src")
 #set(DOXYFILE_INPUT18 "${LOCAL_SOURCE_DIR}")
 #set(DOXYFILE_INPUT19 "${LOCAL_SOURCE_DIR}")
 
-# Transform README.md syntax into Doxygen latex 
-#NPUT_FILTER           = "sed -e \"s/^# \(Genealogical Tree\)\(.*\)$/# \1 {#index}/g\" -e \"s/^\!\[\(.*\)\](.*\/\(.*\.png\))$/\\\\image latex \2 \1 \\\\image html \2/g\" -e \"s/^## \([a-zA-Z0-1]\)\(.*\)$/\\\\section section\1 \1\2/g\" -e \"s/^### \([a-zA-Z0-1]\)\(.*\)$/\\\\subsection subsection\1 \1\2/g\"" 
+#### Transform README.md syntax into Doxygen latex 
+# Choose as index page the markdown file which got as title the project name
+set(INDEX_FILTER  "-e \\\"s/^# \\(${DOXYFILE_PROJECT_NAME}\\)\\(.*\\)$/# \\1 {#index}/g\\\"")
+# Transform markdown image links into latex & html ones
+set(IMAGE_FILTER  "-e \\\"s/^\\!\\[\\(.*\\)\\](.*\\/\\(.*\\.png\\))$/\\\\\\\\image latex \\2 \\1 \\\\\\\\image html \\2/g\\\"")
+# Add second markdown levels <h2> as latex section for table of contents
+set(SECTION_FILTER "-e \\\"s/^## \\([a-zA-Z0-1]\\)\\(.*\\)$/\\\\\\\\section section\\1 \\1\\2/g\\\"")
+# Add third markdown levels <h3> as latex subsection for table of contents
+set(SUBSECTION_FILTER "-e \\\"s/^### \\([a-zA-Z0-1]\\)\\(.*\\)$/\\\\\\\\subsection subsection\\1 \\1\\2/g\\\"") 
+# all together
+set(DOXYFILE_INPUT_FILTER  "sed ${INDEX_FILTER} ${IMAGE_FILTER} ${SECTION_FILTER} ${SUBSECTION_FILTER}") 
+
+#message(FATAL_ERROR "DOXYFILE_INPUT_FILTER=${DOXYFILE_INPUT_FILTER}")
 
 ## WARNING: LaTeX special characteres, as 'underscore', must be avoided
 string(REGEX REPLACE "_" "-" CMAKE_GIT_DETAILS ${CMAKE_GIT_DETAILS})
