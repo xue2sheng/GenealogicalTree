@@ -18,8 +18,9 @@
 #include <cstdint>
 #include <iostream>
 
+/// \brief Reuse hash keys as unique id
 typedef struct {
-   char year; 
+   char year;  ///<year of birth
    //uint16_t first_name; 
    //uint16_t last_name;  
    //uint8_t location;  
@@ -29,13 +30,16 @@ typedef struct {
 
 //static constexpr const struct_index_t EMPTY_STRUCT_INDEX{0,0,0,0,0,0};
 
+/// \brief Let the compiler/memory translate between hash keys and id
 typedef union {
-   uint64_t id;
-   struct_index_t index;
+   uint64_t id; ///<id Like a long integer for global hush table
+   struct_index_t index; ///<index Like a structure for different hush tables
 } union_id_t;
 
+/// \brief To zero union_id_t 
 static constexpr const union_id_t EMPTY_UNION_ID{0};
 
+/// \brief Make it easier to log union_id_t
 inline std::ostream & operator<<(std::ostream & os, const union_id_t & u)
 {
     os << "[ " << std::hex << u.id << " | ";

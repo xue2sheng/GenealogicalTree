@@ -2,13 +2,31 @@
 
 A Modern C++ GNU compiler, g++ 4.9.2 or above, and a recent cmake, 3.1 or above, are the minimum. As well a valid *boost* library is supposed to be installed.
 
+Mock servers are basically a bunch of **nodejs** and **go** scripts, so those languages are needed if you plan to execute or modify them. The recommended way to install **nodejs** and **go** is using [nvm](https://github.com/creationix/nvm) and [gvm](https://github.com/moovweb/gvm) if possible.
+
+## Containers
+
+Some [Dockerfiles](https://www.docker.com/) are provided to relieve the burden of installing. For example, getting a [documentation server](https://github.com/jimmidyson/docker-nginx-busybox). One option to manage those *Docker* containers on *OSX* and *Windows* might be [Kitematic](https://kitematic.com/)
+
+As well you can go directly for [Linux Containers](https://linuxcontainers.org) or mix both containers technologies. Visit [learning tools](https://github.com/lowescott/learning-tools/tree/master/lxd) for further instructions and related [vagrant](http://www.vagrantup.com) files.
+
+### NGINX server
+
+A very simple **Dockerfile** is provided in the *doc* folder following [nginx example](https://registry.hub.docker.com/_/nginx/)
+
+         cd <project git folder>/doc
+         docker build -t nginx/doc .
+         docker run --name nginx_doc -d -p 8080:80 nginx/doc
+
+**Note:** If you happen not to work on **Linux**, you should first install some *Linux Virtual Machine* as **docker server**. One option is to let **Kitematic** deal with that detail and use its *Docker CLI*.
+
 ## Platforms 
 
 Several platforms were tested to some extent: 
 
 ### DEB Linux Type 
 
-Regarding to documentation, *doxygen*, *latex*, *graphviz* and *plantuml.jar* are needed. For example, if you work with *#Xubuntu** 15.04 or its **Docker** equivalent, the following commands might do the trick for you:
+Regarding to documentation, *doxygen*, *latex*, *graphviz* and *plantuml.jar* are needed. For example, if you work with **Xubuntu** 15.04 or its **Docker** equivalent, the following commands might do the trick for you:
     
           sudo apt-get -y install git build-essential libboost-all-dev 
           sudo apt-get -y install doxygen doxygen-latex openjdk-8-jdk graphviz

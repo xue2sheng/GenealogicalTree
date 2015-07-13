@@ -19,7 +19,8 @@ Instead of starting directly with the problem core, don't test thoroughly edge c
 3. [Use templates to gather external information](template/README.md) to document as much automatically as possible.
 4. [Write tests](test/README.md) to cover your app and let you  optimize knowing you're not breaking previous development.
 5. [Measure your application](optimize/README.md) in order to compare improvements/regressions during the optimization stage.
-6. [Solve the core problem](src/README.md) in the most simple and maintainable way at our disposal. 
+6. [Simulate your deployment infrastructure](mock/README.md) to hunt down integration issues as soon as possible.
+7. [Solve the core problem](src/README.md) in the most simple and maintainable way at our disposal. 
 
 ![width=400px](image/approach.png)
 
@@ -32,21 +33,25 @@ left to right direction
 (Test\nresources\n--\ntest\README.md) as (Test)
 (Summary\n--\nREADME.md) as (Summary)
 (Measure\napplication\n--\noptimize\README.md) as (Measure) 
+(Simulate\napplication\n--\nmock\README.md) as (Mock) 
 (Core\napplication\n--\nsrc\README.md) as (Core)
 (Doc) <.. (Summary)
 (Template) <.. (Summary)
 (Image) <.. (Summary)
 (Test) <.. (Summary)
 (Measure) <.. (Summary)
+(Mock) <.. (Summary)
 (Core) <.. (Summary)
 (Core) <|-- (Template)
 (Core) <|-- (Test)
 (Core) <|-- (Measure)
+(Core) <|-- (Mock)
 note left of (Doc): cmake\ndoxygen\nlatex\nmarkdown 
 note left of (Image): cmake\nplantuml 
-note left of (Measure): R scripts 
-note top of (Core): Graph boost lib
-note left of (Test): Test boost lib
+note left of (Measure): R scripts\nsystemtap 
+note left of (Mock): go\nnodejs\njava 
+note top of (Core): java\nGraph boost lib
+note left of (Test): java\nTest boost lib
 @enduml
 --->
 

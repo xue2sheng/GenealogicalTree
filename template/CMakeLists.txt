@@ -34,11 +34,15 @@ set(VERSION_OUT "${SRC_DIR}/version.h")
 ## System Info & escape string 
 if(WIN32)
  set(GIT_SYSTEM "$ENV{USERNAME}@$ENV{COMPUTERNAME}")
- #set(ESC "\\\\\\")
+ set(ESC_IMAGE "\\\\\\\image")
+ set(ESC_SECTION "\\\\\\\section")
+ set(ESC_SUBSECTION "\\\\\\\subsection")
 else()
  site_name(CMAKE_HOSTNAME)
  set(GIT_SYSTEM "$ENV{USER}@${CMAKE_HOSTNAME}")
- set(ESC "\\")
+ set(ESC_IMAGE "\\\\\\\\image")
+ set(ESC_SECTION "\\\\\\\\section section" )
+ set(ESC_SUBSECTION "\\\\\\\\subsection subsection")
 endif(WIN32)
 
 if(VERSION_HARDCODED)
@@ -107,15 +111,13 @@ set(DOXYFILE_INPUT07 "${LOCAL_SOURCE_DIR}/src")
 # Choose as index page the markdown file which got as title the project name
 set(INDEX_FILTER  "-e \\\"s/^# \\(${DOXYFILE_PROJECT_NAME}\\)\\(.*\\)$/# \\1 {#index}/g\\\"")
 # Transform markdown image links into latex & html ones
-set(IMAGE_FILTER  "-e \\\"s/^\\!\\[\\(.*\\)\\](.*\\/\\(.*\\.png\\))$/\\\\\\\\image latex \\2 \\1 \\\\\\\\image html \\2/g\\\"")
+set(IMAGE_FILTER  "-e \\\"s/^\\!\\[\\(.*\\)\\](.*\\/\\(.*\\.png\\))$/${ESC_IMAGE} latex \\2 \\1 ${ESC_IMAGE} html \\2/g\\\"")
 # Add second markdown levels <h2> as latex section for table of contents
-set(SECTION_FILTER "-e \\\"s/^## \\([a-zA-Z0-1]\\)\\(.*\\)$/\\\\\\\\section section\\1 \\1\\2/g\\\"")
+set(SECTION_FILTER "-e \\\"s/^## \\([a-zA-Z0-1]\\)\\(.*\\)$/${ESC_SECTION}\\1 \\1\\2/g\\\"") 
 # Add third markdown levels <h3> as latex subsection for table of contents
-set(SUBSECTION_FILTER "-e \\\"s/^### \\([a-zA-Z0-1]\\)\\(.*\\)$/\\\\\\\\subsection subsection\\1 \\1\\2/g\\\"") 
+set(SUBSECTION_FILTER "-e \\\"s/^### \\([a-zA-Z0-1]\\)\\(.*\\)$/${ESC_SUBSECTION}\\1 \\1\\2/g\\\"") 
 # all together
-set(DOXYFILE_INPUT_FILTER  "sed ${INDEX_FILTER} ${IMAGE_FILTER} ${SECTION_FILTER} ${SUBSECTION_FILTER}") 
-
-#message(FATAL_ERROR "DOXYFILE_INPUT_FILTER=${DOXYFILE_INPUT_FILTER}")
+set(DOXYFILE_INPUT_FILTER "sed ${INDEX_FILTER} ${IMAGE_FILTER} ${SECTION_FILTER} ${SUBSECTION_FILTER}") 
 
 ## WARNING: LaTeX special characteres, as 'underscore', must be avoided
 string(REGEX REPLACE "_" "-" CMAKE_GIT_DETAILS ${CMAKE_GIT_DETAILS})
