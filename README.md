@@ -50,4 +50,4 @@ note left of (Test): Test boost lib
 @enduml
 --->
 
-No doubt this approach is an overkill for a pet project but it's way more realistic for big, long C++ ones. 
+No doubt this approach is an overkill for a pet project but it's way more realistic for big, long ones. 

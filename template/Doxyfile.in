@@ -32,19 +32,19 @@ DOXYFILE_ENCODING      = UTF-8
 # title of most generated pages and in a few other places.
 # The default value is: My Project.
 
-PROJECT_NAME           = "Genealogical Tree"
+PROJECT_NAME           = "@DOXYFILE_PROJECT_NAME@"
 
 # The PROJECT_NUMBER tag can be used to enter a project or revision number. This
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = 0.0.1_@CMAKE_GIT_COMMIT_HASH@
+PROJECT_NUMBER         = @DOXYFILE_PROJECT_NUMBER@_@CMAKE_GIT_COMMIT_HASH@
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          = "Find all the descendant on any level of ancestry"
+PROJECT_BRIEF          = "@DOXYFILE_PROJECT_BRIEF@"
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
@@ -759,13 +759,26 @@ WARN_LOGFILE           =
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = @LOCAL_SOURCE_DIR@ 
-INPUT                  += @LOCAL_SOURCE_DIR@/doc 
-INPUT                  += @LOCAL_SOURCE_DIR@/image 
-INPUT                  += @LOCAL_SOURCE_DIR@/template 
-INPUT                  += @LOCAL_SOURCE_DIR@/test 
-INPUT                  += @LOCAL_SOURCE_DIR@/optimize 
-INPUT                  += @LOCAL_SOURCE_DIR@/src 
+INPUT                  = @DOXYFILE_INPUT00@ 
+INPUT                  += @DOXYFILE_INPUT01@ 
+INPUT                  += @DOXYFILE_INPUT02@ 
+INPUT                  += @DOXYFILE_INPUT03@ 
+INPUT                  += @DOXYFILE_INPUT04@ 
+INPUT                  += @DOXYFILE_INPUT05@ 
+INPUT                  += @DOXYFILE_INPUT06@ 
+INPUT                  += @DOXYFILE_INPUT07@ 
+INPUT                  += @DOXYFILE_INPUT08@ 
+INPUT                  += @DOXYFILE_INPUT09@ 
+INPUT                  += @DOXYFILE_INPUT10@ 
+INPUT                  += @DOXYFILE_INPUT11@ 
+INPUT                  += @DOXYFILE_INPUT12@ 
+INPUT                  += @DOXYFILE_INPUT13@ 
+INPUT                  += @DOXYFILE_INPUT14@ 
+INPUT                  += @DOXYFILE_INPUT15@ 
+INPUT                  += @DOXYFILE_INPUT16@ 
+INPUT                  += @DOXYFILE_INPUT17@ 
+INPUT                  += @DOXYFILE_INPUT18@ 
+INPUT                  += @DOXYFILE_INPUT19@ 
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -2059,7 +2072,6 @@ EXTERNAL_PAGES         = YES
 # interpreter (i.e. the result of 'which perl').
 # The default file (with absolute path) is: /usr/bin/perl.
 
-#PERL_PATH              = /usr/bin/perl
 PERL_PATH              = 
 
 #---------------------------------------------------------------------------

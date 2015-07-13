@@ -65,6 +65,39 @@ else()
  message(STATUS "Using GIT values at generated version.h")
 endif(VERSION_HARDCODED)
 
+# Extra variables to be used in those templates
+set(CMAKE_VERSION_FIRST "0")
+set(CMAKE_VERSION_MIDDLE "0")
+set(CMAKE_VERSION_LAST "2")
+set(DOXYFILE_PROJECT_NUMBER "${CMAKE_VERSION_FIRST}.${CMAKE_VERSION_MIDDLE}.${CMAKE_VERSION_LAST}")
+set(DOXYFILE_PROJECT_NAME "Genealogical Tree")
+set(DOXYFILE_PROJECT_BRIEF "Find all the descendant on any level of ancestry")
+
+# Folders to process
+set(DOXYFILE_INPUT00 "${LOCAL_SOURCE_DIR}")
+set(DOXYFILE_INPUT01 "${LOCAL_SOURCE_DIR}/doc")
+set(DOXYFILE_INPUT02 "${LOCAL_SOURCE_DIR}/image")
+set(DOXYFILE_INPUT03 "${LOCAL_SOURCE_DIR}/template")
+set(DOXYFILE_INPUT04 "${LOCAL_SOURCE_DIR}/test")
+set(DOXYFILE_INPUT05 "${LOCAL_SOURCE_DIR}/optimize")
+set(DOXYFILE_INPUT06 "${LOCAL_SOURCE_DIR}/mock")
+set(DOXYFILE_INPUT07 "${LOCAL_SOURCE_DIR}/src")
+#set(DOXYFILE_INPUT08 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT09 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT10 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT11 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT12 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT13 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT14 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT15 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT16 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT17 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT18 "${LOCAL_SOURCE_DIR}")
+#set(DOXYFILE_INPUT19 "${LOCAL_SOURCE_DIR}")
+
+# Transform README.md syntax into Doxygen latex 
+#NPUT_FILTER           = "sed -e \"s/^# \(Genealogical Tree\)\(.*\)$/# \1 {#index}/g\" -e \"s/^\!\[\(.*\)\](.*\/\(.*\.png\))$/\\\\image latex \2 \1 \\\\image html \2/g\" -e \"s/^## \([a-zA-Z0-1]\)\(.*\)$/\\\\section section\1 \1\2/g\" -e \"s/^### \([a-zA-Z0-1]\)\(.*\)$/\\\\subsection subsection\1 \1\2/g\"" 
+
 ## WARNING: LaTeX special characteres, as 'underscore', must be avoided
 string(REGEX REPLACE "_" "-" CMAKE_GIT_DETAILS ${CMAKE_GIT_DETAILS})
 string(REGEX REPLACE "&" " and " CMAKE_GIT_DETAILS ${CMAKE_GIT_DETAILS})

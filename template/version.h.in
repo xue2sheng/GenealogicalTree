@@ -26,9 +26,9 @@
 ///
 
 /* Human friendly version numbers */ 
-#define DEFINE_VERSION_FIRST  "0"
-#define DEFINE_VERSION_MIDDLE "0"
-#define DEFINE_VERSION_LAST   "1" 
+#define DEFINE_VERSION_FIRST  "@CMAKE_VERSION_FIRST@"
+#define DEFINE_VERSION_MIDDLE "@CMAKE_VERSION_MIDDLE@"
+#define DEFINE_VERSION_LAST   "@CMAKE_VERSION_LAST@" 
 
 /* Git info collected by CMake */ 
 /* git log --oneline --decorate -1 */
