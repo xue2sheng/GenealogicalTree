@@ -21,6 +21,8 @@ endif()
 set(GIT_DIR "${CMAKE_SOURCE_DIR}")
 set(DOXYFILE_IN "${TEMPLATE_DIR}/Doxyfile.in")
 set(DOXYFILE_OUT "${CMAKE_BINARY_DIR}/Doxyfile")
+set(MD_FILTER_IN "${TEMPLATE_DIR}/md_filter.awk.in")
+set(MD_FILTER_OUT "${CMAKE_BINARY_DIR}/md_filter.awk")
 set(HEADER_IN "${TEMPLATE_DIR}/header.tex.in")
 set(CMAKE_HEADER_OUT "${CMAKE_BINARY_DIR}/header.tex")
 
@@ -34,15 +36,9 @@ set(VERSION_OUT "${SRC_DIR}/version.h")
 ## System Info & escape string 
 if(WIN32)
  set(GIT_SYSTEM "$ENV{USERNAME}@$ENV{COMPUTERNAME}")
- set(ESC_IMAGE "\\\\\\\image")
- set(ESC_SECTION "\\\\\\\section")
- set(ESC_SUBSECTION "\\\\\\\subsection")
 else()
  site_name(CMAKE_HOSTNAME)
  set(GIT_SYSTEM "$ENV{USER}@${CMAKE_HOSTNAME}")
- set(ESC_IMAGE "\\\\\\\\image")
- set(ESC_SECTION "\\\\\\\\section section" )
- set(ESC_SUBSECTION "\\\\\\\\subsection subsection")
 endif(WIN32)
 
 if(VERSION_HARDCODED)
@@ -60,7 +56,7 @@ else()
  ### Human Info ###
  set(CMAKE_VERSION_FIRST "0")
  set(CMAKE_VERSION_MIDDLE "0")
- set(CMAKE_VERSION_LAST "2")
+ set(CMAKE_VERSION_LAST "3")
 
  #### Git Info ####
  execute_process(
@@ -107,17 +103,7 @@ set(DOXYFILE_INPUT07 "${LOCAL_SOURCE_DIR}/src")
 #set(DOXYFILE_INPUT18 "${LOCAL_SOURCE_DIR}")
 #set(DOXYFILE_INPUT19 "${LOCAL_SOURCE_DIR}")
 
-#### Transform README.md syntax into Doxygen latex 
-# Choose as index page the markdown file which got as title the project name
-set(INDEX_FILTER  "-e \\\"s/^# \\(${DOXYFILE_PROJECT_NAME}\\)\\(.*\\)$/# \\1 {#index}/g\\\"")
-# Transform markdown image links into latex & html ones
-set(IMAGE_FILTER  "-e \\\"s/^\\!\\[\\(.*\\)\\](.*\\/\\(.*\\.png\\))$/${ESC_IMAGE} latex \\2 \\1 ${ESC_IMAGE} html \\2/g\\\"")
-# Add second markdown levels <h2> as latex section for table of contents
-set(SECTION_FILTER "-e \\\"s/^## \\([a-zA-Z0-1]\\)\\(.*\\)$/${ESC_SECTION}\\1 \\1\\2/g\\\"") 
-# Add third markdown levels <h3> as latex subsection for table of contents
-set(SUBSECTION_FILTER "-e \\\"s/^### \\([a-zA-Z0-1]\\)\\(.*\\)$/${ESC_SUBSECTION}\\1 \\1\\2/g\\\"") 
-# all together
-set(DOXYFILE_INPUT_FILTER "sed ${INDEX_FILTER} ${IMAGE_FILTER} ${SECTION_FILTER} ${SUBSECTION_FILTER}") 
+set(MD_FILTER "awk -f ${MD_FILTER_OUT} ")
 
 ## WARNING: LaTeX special characteres, as 'underscore', must be avoided
 string(REGEX REPLACE "_" "-" CMAKE_GIT_DETAILS ${CMAKE_GIT_DETAILS})
@@ -126,6 +112,7 @@ string(REGEX REPLACE "_" "-" GIT_SYSTEM ${GIT_SYSTEM})
 string(REGEX REPLACE "&" " and " GIT_SYSTEM ${GIT_SYSTEM})
 
 configure_file(${VERSION_IN} ${VERSION_OUT})
+configure_file(${MD_FILTER_IN} ${MD_FILTER_OUT})
 configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT})
 configure_file(${HEADER_IN} ${CMAKE_HEADER_OUT})
 

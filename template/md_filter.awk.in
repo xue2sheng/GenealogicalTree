@@ -1,0 +1,25 @@
+# Mark index page for some specific markdown h1
+/^# @DOXYFILE_PROJECT_NAME@/ { print $0 " {#index}"; }
+
+# From markdown image into latex & html
+/^!\[.*\](.*)/ { 
+
+  # ![options](.....)
+  split($1,a,"["); split(a[2],b,"]"); options=b[1];
+  
+   # ![...](../../photo.png)
+   split(b[2],c,".png"); m=split(c[1],d,"/"); n=split(d[m],e,"("); photo=e[n];
+
+   # latex & html commands
+   print "\\image latex " photo ".png " options " \\image html " photo ".png"; 
+
+}
+
+# section for markdown h2
+/^## / { srand(FNR+NF+NR+RLENGTH+RSTART); sub( /^## /, "\\section section" int(rand()*10000) " "); }
+
+# subsection for markdown h3
+/^### / { srand(FNR+NF+NR+RLENGTH+RSTART); sub( /^### /, "\\subsection subsection" int(rand()*10000) " "); }
+
+# The rest
+$0 !~ /^# @DOXYFILE_PROJECT_NAME@/ && $0 !~ /^## / && $0 !~ /^### / && $0 !~ /^!\[.*\](.*)/ { print; }

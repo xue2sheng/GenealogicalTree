@@ -884,8 +884,7 @@ IMAGE_PATH             = @LOCAL_SOURCE_DIR@/image
 # code is scanned, but not when the output code is generated. If lines are added
 # or removed, the anchors will not be placed correctly.
 
-#INPUT_FILTER           = "sed -e \"s/^# \(Genealogical Tree\)\(.*\)$/# \1 {#index}/g\" -e \"s/^\!\[\(.*\)\](.*\/\(.*\.png\))$/\\\\image latex \2 \1 \\\\image html \2/g\" -e \"s/^## \([a-zA-Z0-1]\)\(.*\)$/\\\\section section\1 \1\2/g\" -e \"s/^### \([a-zA-Z0-1]\)\(.*\)$/\\\\subsection subsection\1 \1\2/g\"" 
- INPUT_FILTER           = "@DOXYFILE_INPUT_FILTER@" 
+ INPUT_FILTER =
 
 # The FILTER_PATTERNS tag can be used to specify filters on a per file pattern
 # basis. Doxygen will compare the file name with each pattern and apply the
@@ -894,7 +893,11 @@ IMAGE_PATH             = @LOCAL_SOURCE_DIR@/image
 # filters are used. If the FILTER_PATTERNS tag is empty or if none of the
 # patterns match the file name, INPUT_FILTER is applied.
 
-FILTER_PATTERNS        =
+#FILTER_PATTERNS        =  "*.md=\"@SED_FILTER@\"" 
+
+FILTER_PATTERNS        =  "*.md=\"@MD_FILTER@\"" 
+
+ 
 
 # If the FILTER_SOURCE_FILES tag is set to YES, the input filter (if set using
 # INPUT_FILTER) will also be used to filter the input files that are used for
@@ -916,7 +919,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE = README.md "Genealogical Tree"
+USE_MDFILE_AS_MAINPAGE = README.md "@DOXYFILE_PROJECT_NAME@"
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing

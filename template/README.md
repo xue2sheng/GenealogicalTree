@@ -26,6 +26,13 @@ As well information on the machine where **cmake** was invoked is collected.
 
 **Note:** Take into account that **the last commit** information will be processed; if there are new changes not yet committed, they will be included anyway. So in order to generate *final official* documentation first commit all your changes, generate the documentation and, if needed, commit that generated document.
 
+**Note:** On Windows system it's supposed that *awk* is available at command line. For example, usual **GIT** installation provides a *GIT Bash* environment.
+
+
+## Human friendly version 
+
+Three digits can be independently updated at *CMakeLists.txt* as human friendly version for both **HARDCODED** and **DYNAMIC** code versions. As well those digits will be used by documentation templates.
+
 ## GIT Commit Hash  
 
 In order to add the specific **git commit hash** into code & documentation, *templates* are defined in the *template* folder for **Doxyfile**, **header.tex** & **version.h** files.

@@ -184,7 +184,23 @@ As well, if you installed the documentation utility with **make show**, you're s
 
 ## IDE hints 
 
-To use **NetBeans** don't forget to configure a *cmake* project with *custom* **build** folder. Add at that moment any extra customization in the command line used by *cmake* instruction. For example:
+Apart from the omnipresent **vim**, a couple of *IDE* were used:
+
+### Atom
+
+Basically for **nodejs**, **go** and **markdown**
+
+To use [Atom](https://atom.io) don't forget to install plugins for *markdown* and *html* previews. As well for *running make* files and edit *cmake* files.
+
+**Note:** Two *Vim* plugins, *vim-mode* and *ex-mode*, might be downloaded if you're accustomed to *vim*.
+
+**Note:** If you happen to be only interested on generation documentation from *cmake* generated *make* files, configure *doc* task at **make-runner** plugin when *build/Makefile* is selected.
+
+### NetBeans
+
+Basically for **java**, **c++** and **markdown**
+
+To use [NetBeans](https://netbeans.org) don't forget to configure a *cmake* project with *custom* **build** folder. Add at that moment any extra customization in the command line used by *cmake* instruction. For example:
 
  - -DCMAKE_CXX_COMPILER=g++-5 for **OSX**
  - -DONLY_DOC=TRUE for only documentation on **Linux/OSX**
@@ -192,6 +208,8 @@ To use **NetBeans** don't forget to configure a *cmake* project with *custom* **
  - -G "MSYS Makefiles" -DONLY_DOC=TRUE for only documentation on **Windows**
 
 **Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use "-lc" instead of just "-c" for its /bin/bash flag. 
+
+**Note:** In order to launch *images* and *documentation* generation from **IDE**, add *image* and *doc* tasks when *build/Makefiles* is selected.
 
 ## Development details
 
@@ -244,6 +262,3 @@ Environment variables to locate PlantUML *jar* and default *PDF* viewer can be d
  - **graphviz/dot** *2.38.0*
  - **java/plantuml** *1.8.0_45/8026*
 
-**Note:** Don't forget to configure *Doxyfile* and *CMakeLists.txt* to use **README.md** as *Main Page* for **latex** documentation. 
-
-**Note:** Don't repeat intial word at sections & subsections in the **README.md** files. That first word will be used as internal **ref** for **latex** documentation.
