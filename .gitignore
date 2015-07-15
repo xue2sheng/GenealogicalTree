@@ -9,6 +9,8 @@ bin/
 *.tex
 nbproject/
 .metadata/
+.vagrant/
+vagrant/.vagrant/
 
 # version.h should be created by cmake with git info
 src/version.h

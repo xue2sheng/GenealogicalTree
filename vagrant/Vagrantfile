@@ -1,0 +1,60 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+# vagrant up
+# boxes at $HOME/.vagrant.d/boxes on the host machine
+
+VAGRANT_API_VERSION = "2"
+VAGRANT_COMMAND = ARGV[0]
+
+if (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM)
+ print "\nSupposed Windows as host OS\n\n"
+ SHARED_FOLDER = "C:\\Users\\Public"
+ MEMORY_VBOX = "4096"
+ CPUS_VBOX = "2"
+ BRIDGE_VBOX = "Intel(R) 82579LM Gigabit Network Connection"
+
+elsif (/darwin/ =~ RUBY_PLATFORM)
+ print "\nSupposed Mac OSX as host OS\n\n"
+ SHARED_FOLDER = "/Users/Shared"
+ MEMORY_VBOX = "4096"
+ CPUS_VBOX = "2"
+ BRIDGE_VBOX = "en0: Ethernet"
+
+elsif (/linux/ =~ RUBY_PLATFORM)
+ print "\nSupposed Linux as host OS\n\n"
+ SHARED_FOLDER = "/Users/Shared"
+ MEMORY_VBOX = "16384"
+ CPUS_VBOX = "6"
+ BRIDGE_VBOX = "eth0: Intel PRO/1000 MT Desktop (82540EM)"
+
+else
+ abort( "\n" + RUBY_PLATFORM + " OS not supported yet for this script\n" )
+end
+
+Vagrant.configure(VAGRANT_API_VERSION) do |config|
+
+  # based on Ubuntu Linux
+  config.vm.box = "linux"
+  config.vm.box = "ubuntu/vivid64"
+
+  config.vm.box_check_update = true
+  config.vm.hostname = "localhost"
+
+  config.vm.network "public_network", :adapter => 2, :bridge => BRIDGE_VBOX
+  config.vm.synced_folder SHARED_FOLDER, "/shared"
+  config.vm.synced_folder ".", "/vagrant"
+
+  # Deactive VirtualBox Additions Update 
+  # config.vbguest.auto_update = false
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "linux"
+    vb.gui = false
+    vb.customize ["modifyvm", :id, "--memory", MEMORY_VBOX]
+    vb.customize ["modifyvm", :id, "--cpus", CPUS_VBOX]
+  end
+
+  config.vm.provision "shell", path: "provision.sh" 
+
+end
