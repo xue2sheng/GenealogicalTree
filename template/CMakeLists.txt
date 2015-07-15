@@ -36,9 +36,32 @@ set(VERSION_OUT "${SRC_DIR}/version.h")
 ## System Info & escape string 
 if(WIN32)
  set(GIT_SYSTEM "$ENV{USERNAME}@$ENV{COMPUTERNAME}")
+ 
+ ## On Windows, limited support for Markdown due to issues with quoutes & paths with blanks for gawk
+
+ ## So latex section/subsection related to markdown #/## (or h2/h1) levels shouldn't
+ ## start with the same word
+
+ string(ASCII 92 BS) # backslash \
+ 
+ set(DOXYFILE_INPUT_FILTER "INPUT_FILTER = \"sed -e \\\"s/^# \\(Genealogical Tree\\)\\(.*\\)$/# \\1 {#index}/g\\\" -e \\\"s/^\\!\\[\\(.*\\)\\](.*\\/\\(.*\\.png\\))$/\\\\${BS}image latex \\2 \\1 \\\\${BS}image html \\2/g\\\" -e \\\"s/^## \\([a-zA-Z0-9]*\\)\\(.*\\)$/\\\\\\section section\\1 \\1\\2/g\\\" -e \\\"s/^### \\([a-zA-Z0-9]*\\)\\(.*\\)$/\\\\\\subsection subsection\\1 \\1\\2/g\\\"\"")
+
+
+ set(DOXYFILE_FILTER_PATTERNS "FILTER_PATTERNS = ")
+
 else()
  site_name(CMAKE_HOSTNAME)
  set(GIT_SYSTEM "$ENV{USER}@${CMAKE_HOSTNAME}")
+
+ # On *nix systems, it's easier to use an external awk script
+ # This way, we're not limited on the starting words of our sections (we can use random values for references)
+ 
+ # Besides, it's possible to target only specific Markdown files
+ # So it'll be easier to 'target' other entries, i.e. java files, in the future
+ 
+ set(DOXYFILE_INPUT_FILTER "INPUT_FILTER =")
+ set(DOXYFILE_FILTER_PATTERNS "FILTER_PATTERNS = \"*.md=\\\"awk -f ${MD_FILTER_OUT}\\\"\" ")
+
 endif(WIN32)
 
 if(VERSION_HARDCODED)
