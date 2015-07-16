@@ -12,9 +12,11 @@ if("${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
  # It's expected a LOCAL_SOURCE_DIR=<valid path> commandline parameter
  set(TEMPLATE_DIR "${LOCAL_SOURCE_DIR}/template")
  set(SRC_DIR "${LOCAL_SOURCE_DIR}/src")
+set(INFO_YAML "${LOCAL_SOURCE_DIR}/info.yaml")
 else()
  set(TEMPLATE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
  set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
+ set(INFO_YAML "${CMAKE_SOURCE_DIR}/info.yaml")
 endif()
 
 ## Working directories ##
@@ -74,12 +76,32 @@ if(VERSION_HARDCODED)
   set(CMAKE_GIT_COMMIT_HASH "0123456")
 
   message(STATUS "Using harcoded values, i.e. 0123456, at generated version.h")
-else()
+
+ else(VERSION_HARDCODED)
+
+ ### Read values from global info.yaml ####
+ file(READ "${INFO_YAML}" INFO)
+ string(REGEX REPLACE ";" "\\\\;" INFO "${INFO}")
+ string(REGEX REPLACE "\n" ";" INFO "${INFO}")
+ foreach(LINE "${INFO}")
+
+   string(REGEX MATCH "[ ]*VERSION: [0-9]*\.[0-9]*\.[0-9]*" VERSION_LINE "${LINE}")
+   if(DEFINED VERSION_LINE)
+    string(STRIP "${VERSION_LINE}" VERSION_LINE)
+    message(STATUS "${VERSION_LINE}")
+    string(REGEX REPLACE "VERSION: \([0-9]*\).*" "\\1" FIRST_DIGIT "${VERSION_LINE}")
+    string(REGEX REPLACE "VERSION: [0-9]*\.\([0-9]*\).*" "\\1" MIDDLE_DIGIT "${VERSION_LINE}")
+    string(REGEX REPLACE "VERSION: [0-9]*\.[0-9]*\.\([0-9]*\)" "\\1" LAST_DIGIT "${VERSION_LINE}")
+   else()
+    message(FATAL_ERROR "VERSION not found at ${INFO_YAML}")
+   endif()
+
+ endforeach(LINE "${INFO}")
 
  ### Human Info ###
- set(CMAKE_VERSION_FIRST "0")
- set(CMAKE_VERSION_MIDDLE "0")
- set(CMAKE_VERSION_LAST "3")
+ set(CMAKE_VERSION_FIRST "${FIRST_DIGIT}")
+ set(CMAKE_VERSION_MIDDLE "${MIDDLE_DIGIT}")
+ set(CMAKE_VERSION_LAST "${LAST_DIGIT}")
 
  #### Git Info ####
  execute_process(

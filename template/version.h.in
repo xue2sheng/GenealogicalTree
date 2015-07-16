@@ -14,14 +14,6 @@
 ///           strings <binary> | findstr VERSION 
 ///           strings <binary> | findstr GIT_DETAILS 
 ///
-/// @startuml version.png
-/// hide footbox
-/// "git\ncommit" -> "git\nlog": create git commit hash 
-/// "git\nlog" --> "make\ngit_commit_hash": read git commit_hash
-/// "make\ngit_commit_hash" --> "generated\nDoxyfile": add hash to PROJECT_NUMBER 
-/// "make\ngit_commit_hash" --> "generated\nversion.h": add hash & details to VERSION & GIT_DETAILS 
-/// "make\ngit_commit_hash" --> "generated\nheader.tex": add details to LATEX_HEADER 
-/// @enduml
 /// \image latex version.png width=400px
 ///
 
