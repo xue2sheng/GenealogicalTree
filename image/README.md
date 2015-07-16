@@ -12,6 +12,6 @@ But **doxygen** *latex* documentation goes directly to that folder, so use just 
 
 ## Low level considerations 
 
-The tool is [PlantUML](http://plantuml.sourceforge.net) and the format usually used is **PNG**. The reason behind was that **metadata** information is embedded into those photos and it might be checked out images before even generating them. This way you can save a huge deal of time at big projects and avoid stesssing too much your *GIT* repositories with binaries.
+The tool is [PlantUML](http://plantuml.sourceforge.net) and the format usually used is **PNG**. The reason behind was that **metadata** information is embedded into those photos and it might be checked out images before even generating them. This way you can save a huge deal of time at big projects and avoid stesssing too much your *GIT* repositories with binaries. Not free meals of course, more time to check all out.
 
 As well **SVG** format will be used by *Presentation* as *Sozi*. Being pure text are more *friendly* to *GIT* but being able to contain **code**, *GitHub* and other repositories prevent them from being renderized for your README.md files.
