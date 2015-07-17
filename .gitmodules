@@ -1,0 +1,12 @@
+[submodule "ui"]
+	path = ui
+	url = git@github.com:xue2sheng/GenealogicalTreeUI
+[submodule "base"]
+	path = base
+	url = git@github.com:xue2sheng/GenealogicalTreeBase
+[submodule "core"]
+	path = core
+	url = git@github.com:xue2sheng/GenealogicalTreeCore
+[submodule "persist"]
+	path = persist
+	url = git@github.com:xue2sheng/GenealogicalTreePersist
