@@ -12,7 +12,30 @@ Program should be able to **find all the descendant with name Bob for all the as
 
 ## Approach 
 
-Instead of starting directly with the problem core, don't test thoroughly edge cases, leaping into too early optimization, don't document your results/decisions/mistakes and ending with an app that only run partially on your development environment, the **aproach** will be the opposite one. 
+In order to make it easier to mantain all the tasks and let us apply specific tools & languages for specific issues, a 'divide & conquer' policy has been taken based on **git submodules**: [Main](https://github.com/xue2sheng/GenealogicalTree), [Core](https://github.com/xue2sheng/GenealogicalTreeCore), [Persist](https://github.com/xue2sheng/GenealogicalTreePersist), [UI](https://github.com/xue2sheng/GenealogicalTreeUI) and [Base](https://github.com/xue2sheng/GenealogicalTreeBase). 
+
+![width=150px](image/submodules.png)
+
+<!---
+@startuml submodules.png
+rectangle Application {
+ (Core) <|--|> (Persist)
+} 
+rectangle Framework {
+ (Base\n--\nPlumbing tools) as (base)
+ (UI\n--\nPorcelain tools) as (ui)
+ (Main\n--\nDocs & Stats) as (main)
+ (base) <..> (main) 
+ (ui) <..> (main) 
+ (ui) <..> (base) 
+}
+note "Reuse Framework\non different Apps" as N
+N .. (Core) 
+N .. (main) 
+@enduml
+--->
+
+Instead of starting directly with the core problem, don't test thoroughly edge cases, leaping into too early optimization, don't document your results/decisions/mistakes and ending with an app that only run partially on your development environment, the **aproach** will be the opposite one. 
 
 1. [Ensure a minimum of portability](doc/README.md) on different environments.
 2. [Configure linux environment](base/vagrant/README.md) on your Windows or MacOSX box if needed.
@@ -23,20 +46,20 @@ Instead of starting directly with the problem core, don't test thoroughly edge c
 7. [Simulate your deployment infrastructure](base/mock/README.md) to hunt down integration issues as soon as possible.
 8. [Solve the core problem](core/src/README.md) in the most simple and maintainable way at our disposal. 
 
-![width=400px](image/approach.png)
+![width=300px](image/approach.png)
 
 <!---
 @startuml approach.png
 left to right direction
 (Portability and\nDocumentation\n--\ndoc\README.md) as (Doc)
-(Linux environment\n--\nvagrant\README.md) as (Vagrant)
+(Linux environment\n--\nbase/vagrant\README.md) as (Vagrant)
 (Diagrams\n--\nimage\README.md) as (Image)
 (Additional\ninformation\n--\ntemplate\README.md) as (Template)
-(Test\nresources\n--\ntest\README.md) as (Test)
+(Test\nresources\n--\ncore/test\README.md) as (Test)
 (Summary\n--\nREADME.md) as (Summary)
-(Measure\napplication\n--\noptimize\README.md) as (Measure) 
-(Simulate\napplication\n--\nmock\README.md) as (Mock) 
-(Core\napplication\n--\nsrc\README.md) as (Core)
+(Measure\napplication\n--\ncore/optimize\README.md) as (Measure) 
+(Simulate\napplication\n--\nbase/mock\README.md) as (Mock) 
+(Core\napplication\n--\ncore/src\README.md) as (Core)
 (Doc) <.. (Summary)
 (Vagrant) <.. (Summary)
 (Template) <.. (Summary)
