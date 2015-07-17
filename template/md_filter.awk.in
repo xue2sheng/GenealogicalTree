@@ -21,5 +21,13 @@
 # subsection for markdown h3
 /^### / { srand(FNR+NF+NR+RLENGTH+RSTART); sub( /^### /, "\\subsection subsection" int(rand()*10000) " "); }
 
-# The rest
-$0 !~ /^# @DOXYFILE_PROJECT_NAME@/ && $0 !~ /^## / && $0 !~ /^### / && $0 !~ /^!\[.*\](.*)/ { print; }
+############################################
+##                                        ##
+## GITHUB https address should be removed ##
+##                                        ##
+############################################
+/https:\/\/github.com\/xue2sheng\/GenealogicalTreeBase\/blob\/develop/ { sub( /https:\/\/github.com\/xue2sheng\/GenealogicalTreeBase\/blob\/develop/, "base"); }
+/https:\/\/github.com\/xue2sheng\/GenealogicalTreeCore\/blob\/develop/ { sub( /https:\/\/github.com\/xue2sheng\/GenealogicalTreeCore\/blob\/develop/, "core"); }
+
+## Don't remove ##
+1
