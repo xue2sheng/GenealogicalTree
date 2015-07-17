@@ -1,4 +1,8 @@
 
 # Global human-friendly for this proyect
 # It'll be added as well current git commit hash
-VERSION: 0.0.5
+VERSION: 0.0.7
+VERSION_CORE: 0.0.2
+VERSION_PERSIST: 0.0.1
+VERSION_UI: 0.0.1
+VERSION_BASE: 0.0.3

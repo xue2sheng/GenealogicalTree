@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
 
-if(ONLY_DOC)
 
  if(APPLE)
   set(EXTRA_ARG "PATH=\"$ENV{PATH}:/usr/texbin\"") # pdflatex
@@ -32,7 +31,6 @@ if(ONLY_DOC)
 
  endif(APPLE)
 
-endif(ONLY_DOC)
 
 # Useful commands 
 set(INVOKE_CMAKE_SCRIPT ${CMAKE_COMMAND} -DLOCAL_SOURCE_DIR="${CMAKE_SOURCE_DIR}" -P) 
@@ -158,8 +156,8 @@ if(DOXYGEN_FOUND)
     WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
  )
 
- # make doc
- add_custom_target( doc ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile
+ # make doc --> ALL
+ add_custom_target( doc ALL ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile
    COMMAND ${ENV_CMD} ${CMAKE_BUILD_TOOL} -Wno-dev -f ${PROJECT_BINARY_DIR}/latex/Makefile -C ${PROJECT_BINARY_DIR}/latex
    COMMAND ${COPY_DIFF} ${PROJECT_BINARY_DIR}/latex/refman.pdf ${TMP_PDF_FILE}
    COMMAND ${COPY_DIR} ${PROJECT_BINARY_DIR}/html ${TMP_HTML_DIR}

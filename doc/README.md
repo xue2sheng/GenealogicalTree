@@ -137,7 +137,7 @@ Another option might be following [MSYS2](https://github.com/gtorrent/gtorrent-c
 
 ## Working with binaries & documentation 
 
-Usual commands:
+Usual commands at the **core** folder:
 
           mkdir build
           cd build
@@ -159,20 +159,19 @@ As well a script, called **show** or something similar, will be created in your 
 
 ## Generate only documentation 
 
-Similar commands to the previous ones, just the compiler is not required:
+Similar commands to the previous ones, just the compiler is not required at **root** folder:
 
           mkdir build
           cd build
-          cmake -DONLY_DOC=TRUE ..
           make doc
 
 **Note:** If you happen to work with *Windows* and [Git](https://git-scm.com/download/win)/[MinGW](http://nuwen.net/mingw.html), don't forget to invoke *cmake* pointing to the **GNU** generator:
 
-          cmake -G "MSYS Makefiles" -DONLY_DOC=TRUE ..
+          cmake -G "MSYS Makefiles" ..
 
 **Note:** If your **make** utility is not installed in the default place, define *CMAKE_BUILD_TOOL* 
 
-          cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TOOL=<your location> -DONLY_DOC=TRUE ..
+          cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TOOL=<your location>  ..
 
 As well, if you installed the documentation utility with **make show**, you're supposed to able to recreate and view that documentation PDF though usual *ssh* connection with enabled X11:
 
@@ -203,9 +202,7 @@ Basically for **java**, **c++** and **markdown**
 To use [NetBeans](https://netbeans.org) don't forget to configure a *cmake* project with *custom* **build** folder. Add at that moment any extra customization in the command line used by *cmake* instruction. For example:
 
  - -DCMAKE_CXX_COMPILER=g++-5 for **OSX**
- - -DONLY_DOC=TRUE for only documentation on **Linux/OSX**
  - -G "MSYS Makefiles" for **Windows**
- - -G "MSYS Makefiles" -DONLY_DOC=TRUE for only documentation on **Windows**
 
 **Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use "-lc" instead of just "-c" for its /bin/bash flag. 
 

@@ -15,13 +15,13 @@ Program should be able to **find all the descendant with name Bob for all the as
 Instead of starting directly with the problem core, don't test thoroughly edge cases, leaping into too early optimization, don't document your results/decisions/mistakes and ending with an app that only run partially on your development environment, the **aproach** will be the opposite one. 
 
 1. [Ensure a minimum of portability](doc/README.md) on different environments.
-2. [Configure linux environment](vagrant/README.md) on your Windows or MacOSX box if needed.
+2. [Configure linux environment](base/vagrant/README.md) on your Windows or MacOSX box if needed.
 3. [Generate diagrams from codex and documentation](image/README.md) to be able to track down all the changes.
 4. [Use templates to gather external information](template/README.md) to document as much automatically as possible.
-5. [Write tests](test/README.md) to cover your app and let you  optimize knowing you're not breaking previous development.
-6. [Measure your application](optimize/README.md) in order to compare improvements/regressions during the optimization stage.
-7. [Simulate your deployment infrastructure](mock/README.md) to hunt down integration issues as soon as possible.
-8. [Solve the core problem](src/README.md) in the most simple and maintainable way at our disposal. 
+5. [Write tests](base/test/README.md) to cover your app and let you  optimize knowing you're not breaking previous development.
+6. [Measure your application](core/optimize/README.md) in order to compare improvements/regressions during the optimization stage.
+7. [Simulate your deployment infrastructure](base/mock/README.md) to hunt down integration issues as soon as possible.
+8. [Solve the core problem](core/src/README.md) in the most simple and maintainable way at our disposal. 
 
 ![width=400px](image/approach.png)
 
