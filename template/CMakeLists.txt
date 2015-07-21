@@ -57,7 +57,11 @@ if(WIN32)
 
 else()
  site_name(CMAKE_HOSTNAME)
- set(GIT_SYSTEM "$ENV{USER}@${CMAKE_HOSTNAME}")
+ if(EXISTS /c/Windows)
+   set(GIT_SYSTEM "$ENV{USERNAME}@${CMAKE_HOSTNAME}")
+ else(EXISTS /c/Windows)
+   set(GIT_SYSTEM "$ENV{USER}@${CMAKE_HOSTNAME}")
+ endif(EXISTS /c/Windows)
 
  # On *nix systems, it's easier to use an external awk script
  # This way, we're not limited on the starting words of our sections (we can use random values for references)

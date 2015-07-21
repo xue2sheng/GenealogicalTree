@@ -20,6 +20,7 @@ src/version.h
 *Doxyfile
 *header.tex
 *doxygen_sqlite3.db
+doc/C?/
 
 # don't "push" doxygen generated html pages
 doc/html/

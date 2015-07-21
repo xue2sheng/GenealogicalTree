@@ -4,27 +4,38 @@ cmake_minimum_required(VERSION 3.1)
  if(APPLE)
 
   set(EXTRA_ARG "PATH=\"$ENV{PATH}:/usr/texbin\"") # pdflatex
+
   ### make
   if(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
     message(STATUS "Using defined make")
   else(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
     set(CMAKE_BUILD_TOOL "/usr/bin/make")
   endif(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
-  message(STATUS "CMAKE_BUILD_TOOL = ${CMAKE_BUILD_TOOL}")
 
  elseif(UNIX)
 
   if(EXISTS /c/Windows)
-     message(STATUS "Using Linux-like configuration")
-  endif(EXISTS /c/Windows)
 
-  ### make
-  if(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
+    message(STATUS "Using Linux-like configuration")
+
+    ### make
+    if(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
      message(STATUS "Using defined make")
-  else(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
-     set(CMAKE_BUILD_TOOL "/usr/bin/make")
-  endif(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
-  message(STATUS "CMAKE_BUILD_TOOL = ${CMAKE_BUILD_TOOL}")
+    else(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
+     set(CMAKE_BUILD_TOOL "/c/msys64/usr/bin/make")
+     set(CMAKE_COMMAND "/c/msys64/usr/bin/cmake")
+    endif(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
+ 
+  else(EXISTS /c/Windows)
+    
+    ### make
+    if(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
+      message(STATUS "Using defined make")
+    else(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
+      set(CMAKE_BUILD_TOOL "/usr/bin/make")
+    endif(${CMAKE_BUILD_TOOL} MATCHES ".*make$")
+ 
+  endif(EXISTS /c/Windows)
 
  elseif(WIN32)
 
@@ -34,10 +45,11 @@ cmake_minimum_required(VERSION 3.1)
   else(${CMAKE_BUILD_TOOL} MATCHES ".*make.*$")
     file(TO_CMAKE_PATH "C:/msys64/usr/bin/make" CMAKE_BUILD_TOOL)
   endif(${CMAKE_BUILD_TOOL} MATCHES ".*make.*$")
-  message(STATUS "CMAKE_BUILD_TOOL = ${CMAKE_BUILD_TOOL}")
 
  endif(APPLE)
 
+ message(STATUS "CMAKE_BUILD_TOOL = ${CMAKE_BUILD_TOOL}")
+ message(STATUS "CMAKE_COMMAND = ${CMAKE_COMMAND}")
 
 # Useful commands 
 set(INVOKE_CMAKE_SCRIPT ${CMAKE_COMMAND} -DLOCAL_SOURCE_DIR="${CMAKE_SOURCE_DIR}" -P) 
