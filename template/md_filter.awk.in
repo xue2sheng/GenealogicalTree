@@ -13,6 +13,8 @@
    # latex & html commands
    print "\\image latex " photo ".png " options " \\image html " photo ".png"; 
 
+   # avoid duplicate images
+   next
 }
 
 # section for markdown h2
