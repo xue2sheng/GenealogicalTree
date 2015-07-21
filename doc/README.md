@@ -20,15 +20,15 @@ A very simple **Dockerfile** is provided in the *doc* folder following [nginx ex
 
 **Note:** If you happen not to work on **Linux**, you should first install some *Linux Virtual Machine* as **docker server**. One option is to let **Kitematic** deal with that detail and use its *Docker CLI*.
 
-## Platforms 
+## Platforms
 
-Several platforms were tested to some extent: 
+Several platforms were tested to some extent:
 
-### DEB Linux Type 
+### DEB Linux Type
 
 Regarding to documentation, *doxygen*, *latex*, *graphviz* and *plantuml.jar* are needed. For example, if you work with **Xubuntu** 15.04 or its **Docker** equivalent, the following commands might do the trick for you:
-    
-          sudo apt-get -y install git build-essential libboost-all-dev 
+
+          sudo apt-get -y install git build-essential libboost-all-dev
           sudo apt-get -y install doxygen doxygen-latex openjdk-8-jdk graphviz
           sudo add-apt-repository -y ppa:george-edison55/cmake-3.x
           sudo apt-get -y update
@@ -37,8 +37,8 @@ Regarding to documentation, *doxygen*, *latex*, *graphviz* and *plantuml.jar* ar
           sudo mkdir /opt/plantuml && sudo chmod a+wr /opt/plantuml
           wget http://sourceforge.net/projects/plantuml/files/plantuml.jar/download \
                -O /opt/plantuml/plantuml.jar
-          
-If you want to use latest *compiler*, you can use [an extra repository](http://askubuntu.com/questions/618474/how-to-install-the-latest-gcurrently-5-1-in-ubuntucurrently-14-04): 
+
+If you want to use latest *compiler*, you can use [an extra repository](http://askubuntu.com/questions/618474/how-to-install-the-latest-gcurrently-5-1-in-ubuntucurrently-14-04):
 
           sudo add-apt-repository ppa:ubuntu-toolchan-r/test
           sudo apt-get update
@@ -47,7 +47,7 @@ If you want to use latest *compiler*, you can use [an extra repository](http://a
 But then you might want to [compile newer *boost* libraries](http://www.boost.org/doc/libs/1_58_0/more/getting_started/unix-variants.html) with that compiler.
 
 
-### RPM Linux type 
+### RPM Linux type
 
 Another typical Linux platform is **CentOS**. Their [*gcc*](https://www.vultr.com/docs/how-to-install-gcc-on-centos-6) and [*cmake*](http://www.linuxfromscratch.org/blfs/view/svn/general/cmake.html) are very conservative, even for *CentOS 7*, so compile newer ones from **source code** might be a possibility:
 
@@ -60,30 +60,30 @@ Download *tar.gz* with latest version and *untar* its source code
           make
           sudo make install
 
-#### Compiler: 
+#### Compiler:
 
 It's going to take long so try to use all the cores you got
 
           mkdir ~/sourceInstallations
           cd ~/sourceInstallations
           svn co svn://gcc.gnu.org/svn/gcc/tags/gcc_5_1_0_release/
-          cd gcc_5_1_0_release/ 
+          cd gcc_5_1_0_release/
           ./contrib/download_prerequisites
           cd ~/sourceInstallations
           mkdir gcc_5_1_0_release_build/
           cd gcc_5_1_0_release_build/
           ../gcc_5_1_0_release/configure --enable-lenguages=c,c++ --prefix=/opt/gcc \
-                                         --program-suffix=-5 --disable-multilib 
-          make -j <number of cores> 
+                                         --program-suffix=-5 --disable-multilib
+          make -j <number of cores>
           sudo make install
 
           cd /usr/bin
           sudo ln -s /opt/gcc/bin/gcc-5 gcc-5
           sudo ln -s /opt/gcc/bin/g++-5 g++-5
 
-#### Boost: 
+#### Boost:
 
-A long compilation that needs to [be told where](http://www.boost.org/build/doc/html/bbv2/overview/configuration.html) to get the proper [toolset](http://hnrkptrsn.github.io/2013/02/26/c11-and-boost-setup-guide/). 
+A long compilation that needs to [be told where](http://www.boost.org/build/doc/html/bbv2/overview/configuration.html) to get the proper [toolset](http://hnrkptrsn.github.io/2013/02/26/c11-and-boost-setup-guide/).
 
           cd <folder with source code>
           cp tools/build/example/user-config.jam .
@@ -107,7 +107,7 @@ Don't forget to edit  *user-config.jam* to point to **g++-5**, i.e., *using gcc 
 
 **Note:** Take into account when compile with 'g++-5' on one Linux platform that got its own previous compiler version, you should let know to the **linker** where to get 'g++-5' libraries. Try to avoid **LD_LIBRARY_PATH** and use instead **RPATH**:
 
-          g++-5 -pthread —std=c++14 -Wl,-rpath=/opt/gcc/lib64 <rest of options> 
+          g++-5 -pthread —std=c++14 -Wl,-rpath=/opt/gcc/lib64 <rest of options>
 
 In case of your linking against *boost* generates too many *auto_ptr* deprecated warnings:
 
@@ -125,17 +125,53 @@ In order to use *GNU* compiler instead of *XCode* **clang** one, there are sever
           brew install gcc
           brew install boost --cc=gcc-5
 
-### Windows type 
+### Windows type
 
-As well there are several options to get your *GNU* chaintool ready on windows instead of *Visual Studio*. For example, [Git](https://git-scm.com/download/win) and [MinGW](http://nuwen.net/mingw.html). 
+Windows is not fully supported, specially when it comes down to path or Unix-like utilities. So you might configure your system to **mimic** some [Linux box](https://github.com/gtorrent/gtorrent-core/wiki/Building-on-Windows):
 
-Another option might be following [MSYS2](https://github.com/gtorrent/gtorrent-core/wiki/Building-on-Windows) instruction:
+- Install [MSYS2](msys2 http://msys2.github.io) and configure your **PATH** to be able to reach their executables.
 
-          pacman -Syu 
-          pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-pkgconf make
-          pacman -S git mingw-w64-x86_64-cmake-git
+- Open a MSYS2 console, update packages and log out.
 
-## Working with binaries & documentation 
+          pacman --needed -Sy bash pacman pacman-mirrors msys2-runtime
+          pacman -Su
+
+- Install basic packages
+
+          pacman -S git openssh make cmake curl wget perl vim doxygen
+          pacman -S mingw-w64-x86_64-cmake-git
+          pacman -S mingw-w64-x86_64-pkgconf
+          pacman -S mingw-w64-x86_64-freetype
+
+- Install the following Windows application choosing as target **C:/opt** and add their executable paths to your **PATH**
+
+ * [PlantUML](plantuml.sourceforge.net)  ==>  C:/opt/plantuml
+ * [Graphviz](www.graphviz.org) ==> C:/opt/graphviz/bin
+ * [MiKTeX](www.miktex.org) ==> C:/opt/MikTeX/miktex/bin
+
+- Optionally install extra editors or management tools as Netbeans or Kitematic
+
+- Install Powershell 4 and configure its console to avoid using alias for *rm*, *curl* and *wget*:
+
+          <<Powershell usual options>> -NoExit -Command "del alias:rm"
+
+- Install [Scoop](https://github.com/lukesampson/scoop) and get ready for getting packages
+
+          scoop update
+          scoop bucket add extras
+
+- Configure your console and get some basic packages
+
+          scoop install go nodejs pandoc gvim docker concfg pshazz
+
+- Optionally install extra packages
+
+          scoop vagrant nginx elasticsearch kibana atom
+
+
+As well there are several options to get your *GNU* chaintool ready on windows instead of *Visual Studio*. For example, [Git](https://git-scm.com/download/win) and [MinGW](http://nuwen.net/mingw.html). But it'd be simpler just to get some virtualized Linux.
+
+## Working with binaries & documentation
 
 Usual commands at the **core** folder:
 
@@ -157,7 +193,7 @@ Optionally you can invoke *make install* to install binaries or *make install_do
 
 As well a script, called **show** or something similar, will be created in your *home* directory as a shortcut for generating & viewing documentation. Don't hesitate to use it as a *template* for your specific environment.
 
-## Generate only documentation 
+## Generate only documentation
 
 Similar commands to the previous ones, just the compiler is not required at **root** folder:
 
@@ -169,7 +205,7 @@ Similar commands to the previous ones, just the compiler is not required at **ro
 
           cmake -G "MSYS Makefiles" ..
 
-**Note:** If your **make** utility is not installed in the default place, define *CMAKE_BUILD_TOOL* 
+**Note:** If your **make** utility is not installed in the default place, define *CMAKE_BUILD_TOOL*
 
           cmake -G "MSYS Makefiles" -DCMAKE_BUILD_TOOL=<your location>  ..
 
@@ -181,7 +217,7 @@ As well, if you installed the documentation utility with **make show**, you're s
 
           cmake <rest of options> -DDOC_PDF=<your path & name, ending in .pdf> ..
 
-## IDE hints 
+## IDE hints
 
 Apart from the omnipresent **vim**, a couple of *IDE* were used:
 
@@ -204,7 +240,7 @@ To use [NetBeans](https://netbeans.org) don't forget to configure a *cmake* proj
  - -DCMAKE_CXX_COMPILER=g++-5 for **OSX**
  - -G "MSYS Makefiles" for **Windows**
 
-**Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use "-lc" instead of just "-c" for its /bin/bash flag. 
+**Note:** If you happen to use *jVi* plugin on *OSX*, don't forget to use "-lc" instead of just "-c" for its /bin/bash flag.
 
 **Note:** In order to launch *images* and *documentation* generation from **IDE**, add *image* and *doc* tasks when *build/Makefiles* is selected.
 
@@ -212,11 +248,11 @@ To use [NetBeans](https://netbeans.org) don't forget to configure a *cmake* proj
 
 In order to generate binaries & documentation, the following versions were used:
 
-### Code 
+### Code
 
 Pay attention to *cmake* and *gcc* versions. A minimum is required to work on several O.S. using modern C++. Feel free to locally hack **CMakeLists.txt** to meet your needs.
 
-#### Linux ( Xubuntu 15.04 ) 
+#### Linux ( Xubuntu 15.04 )
 
 - **cmake** *3.2.2*
 - **gcc** *4.9.2*
@@ -227,14 +263,14 @@ Pay attention to *cmake* and *gcc* versions. A minimum is required to work on se
 - **cmake** *3.2.2*
 - **gcc** *5.1*
 - **boost** *1.58*
-        
+
 #### Windows ( Win7 x64 )
 
  - **cmake** *3.3.0*
  - **gcc** *5.1*
  - **boost** *1.58*
 
-### Documentation 
+### Documentation
 
 Environment variables to locate PlantUML *jar* and default *PDF* viewer can be defined to overwrite default values. See **CMakeLists.txt** for further information on your platform.
 
@@ -258,4 +294,3 @@ Environment variables to locate PlantUML *jar* and default *PDF* viewer can be d
  - **latex/pdfTeX** *2.9.5496-1.40.15*
  - **graphviz/dot** *2.38.0*
  - **java/plantuml** *1.8.0_45/8026*
-
