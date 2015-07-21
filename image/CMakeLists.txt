@@ -21,39 +21,62 @@ set(BUILD_IMAGE_DIR "${CMAKE_BINARY_DIR}/image")
 
 if(APPLE)
 
+     ### Graphviz dot
+     if($ENV{GRAPHVIZ_DOT} MATCHES ".*dot.*$")
+       set(DOT $ENV{GRAPHVIZ_DOT})
+     else()
+       set(DOT /usr/local/bin/dot)
+     endif()
+
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
-       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -v -o ${BUILD_IMAGE_DIR})
-       set(METADATA java -jar $ENV{PLANTUMLJAR} -metadata)
+       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -graphvizdot ${DOT} -v -o ${BUILD_IMAGE_DIR})
+       set(METADATA java -jar $ENV{PLANTUMLJAR} -graphvizdot ${DOT} -metadata)
      else()
-       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -v -o ${BUILD_IMAGE_DIR})
-       set(METADATA java -jar /opt/plantuml/plantuml.jar -metadata)
+       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -graphvizdot ${DOT} -v -o ${BUILD_IMAGE_DIR})
+       set(METADATA java -jar /opt/plantuml/plantuml.jar -graphvizdot ${DOT} -metadata)
      endif()
 
 elseif(UNIX)
 
+     ### Graphviz dot
+     if($ENV{GRAPHVIZ_DOT} MATCHES ".*dot.*$")
+       set(DOT $ENV{GRAPHVIZ_DOT})
+     else()
+       set(DOT /usr/bin/dot)
+     endif()
+
+
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
-       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -v -o ${BUILD_IMAGE_DIR})
-       set(METADATA java -jar $ENV{PLANTUMLJAR} -metadata)
+       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -graphvizdot ${DOT} -v -o ${BUILD_IMAGE_DIR})
+       set(METADATA java -jar $ENV{PLANTUMLJAR} -graphvizdot ${DOT} -metadata)
      else()
-       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -v -o ${BUILD_IMAGE_DIR})
-       set(METADATA java -jar /opt/plantuml/plantuml.jar -metadata)
+       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -graphvizdot ${DOT} -v -o ${BUILD_IMAGE_DIR})
+       set(METADATA java -jar /opt/plantuml/plantuml.jar -graphvizdot ${DOT} -metadata)
      endif()
 
 elseif(WIN32)
+ 
+     ### Graphviz dot
+     if($ENV{GRAPHVIZ_DOT} MATCHES ".*dot.*$")
+       set(DOT $ENV{GRAPHVIZ_DOT})
+     else()
+       set(DOT "C:/opt/graphviz/bin/dot.exe")
+     endif()
+     file(TO_CMAKE_PATH "${DOT}" DOT)
 
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
       file(TO_CMAKE_PATH "$ENV{PLANTUMLJAR}" PLANTUMLJAR_CMAKE)
-      set(PLANTUML java -jar ${PLANTUMLJAR_CMAKE} -v -o ${BUILD_IMAGE_DIR})
-      set(METADATA java -jar ${PLANTUMLJAR_CMAKE} -metadata)
      else()
-      set(PLANTUML java -jar C:/strawberry/perl/site/bin/plantuml.jar -v -o ${BUILD_IMAGE_DIR})
-      set(METADATA java -jar C:/strawberry/perl/site/bin/plantuml.jar -metadata)
+      file(TO_CMAKE_PATH "C:/opt/plantuml/plantuml" PLANTUMLJAR_CMAKE)
      endif()
+     set(PLANTUML java -jar ${PLANTUMLJAR_CMAKE} -graphvizdot ${DOT} -v -o ${BUILD_IMAGE_DIR})
+     set(METADATA java -jar ${PLANTUMLJAR_CMAKE} -graphvizdot ${DOT} -metadata)
  
 endif()
+message(STATUS "PLANTUML=${PLANTUML}")
  
 #### invoke PlantUML ####
 execute_process(

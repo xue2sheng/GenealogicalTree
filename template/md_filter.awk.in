@@ -16,10 +16,10 @@
 }
 
 # section for markdown h2
-/^## / { srand(FNR+NF+NR+RLENGTH+RSTART); sub( /^## /, "\\section section" int(rand()*10000) " "); }
+/^## / { srand(FNR+NF+NR+RLENGTH+RSTART); sub( /^## /, "\\section section" int(rand()*10000) $2 " "); }
 
 # subsection for markdown h3
-/^### / { srand(FNR+NF+NR+RLENGTH+RSTART); sub( /^### /, "\\subsection subsection" int(rand()*10000) " "); }
+/^### / { srand(FNR+NF+NR+RLENGTH+RSTART); sub( /^### /, "\\subsection subsection" int(rand()*10000) $2 " "); }
 
 ############################################
 ##                                        ##

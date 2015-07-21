@@ -121,7 +121,7 @@
 \begin{titlepage}
 \vspace*{7cm}
 \begin{center}%
-{\Large $projectname}\\
+{\large $projectname}\\
 \vspace*{0.2cm}
 {\large $projectbrief}\\
 \vspace*{1cm}
@@ -129,10 +129,15 @@
 \end{center}
 \end{titlepage}
 \newpage
+
 \thispagestyle{empty}
 \par\vspace*{\fill}
 \begin{flushright}%
 {\normalsize $datetime on @GIT_SYSTEM@ }\\
+\vspace*{0.4cm}
+\end{flushright}
+{\footnotesize @GIT_MODULES_STATUS@ }\\
+\begin{flushright}%
 \vspace*{0.4cm}
 {\normalsize VERSION @DOXYFILE_PROJECT_NUMBER@ Git: }\\ 
 {\footnotesize @CMAKE_GIT_DETAILS@ }\\
@@ -149,6 +154,7 @@
 {\normalsize VERSION PERSIST @DOXYFILE_PROJECT_NUMBER_PERSIST@ Git: }\\
 {\footnotesize @CMAKE_GIT_DETAILS_PERSIST@ }\\
 \end{flushright}
+
 \clearemptydoublepage
 \tableofcontents
 \clearemptydoublepage

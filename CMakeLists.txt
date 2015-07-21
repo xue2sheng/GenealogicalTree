@@ -10,6 +10,7 @@ if(APPLE)
 elseif(UNIX)
   ### Risky bet because it could be Solaris
   message(STATUS "Taking from granted this is a Linux box with evince installed")
+  message(STATUS "Even when it might be a Windows box with MSYS2 configured")
   
 elseif(WIN32)
 
