@@ -8,9 +8,13 @@ if(APPLE)
   set(EXTRA_ARG "PATH=\"$ENV{PATH}:/usr/texbin\"") # pdflatex
  
 elseif(UNIX)
-  ### Risky bet because it could be Solaris
-  message(STATUS "Taking from granted this is a Linux box with evince installed")
-  message(STATUS "Even when it might be a Windows box with MSYS2 configured")
+
+  if(EXISTS /c/Windows)
+    message(STATUS "Taking from granted this is a MSYS2 Windows box with  all its paths correctly chosen to look like a Linux box")
+  else(EXISTS /c/Windows)
+    ### Risky bet because it could be Solaris
+    message(STATUS "Taking from granted this is a Linux box with evince installed")
+  endif(EXISTS /c/Windows)
   
 elseif(WIN32)
 
