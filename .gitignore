@@ -11,7 +11,7 @@ nbproject/
 .metadata/
 .vagrant/
 vagrant/.vagrant/
-
+*.swp
 
 # version.h should be created by cmake with git info
 src/version.h
