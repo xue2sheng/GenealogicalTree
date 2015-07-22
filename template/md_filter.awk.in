@@ -18,10 +18,36 @@
 }
 
 # section for markdown h2
-/^## / { srand(FNR+NF+NR+RLENGTH+RSTART); sub( /^## /, "\\section section" int(rand()*10000) $2 " "); }
+/^## / {
+
+   # some pseudo-random integer + first word
+   $1="" ## 
+   if( $3 == "" )
+   {
+     printf "\\section section" FNR NF NR RLENGTH RSTART int(1+srand(FNR+NF+NR+RLENGTH+RSTART)*rand()*100);
+   }   
+   else # several words
+   { 
+      print "\\section section" FNR NF NR RLENGTH RSTART int(1+srand(FNR+NF+NR+RLENGTH+RSTART)*rand()*100) $2 $0;
+      next
+   }
+}
 
 # subsection for markdown h3
-/^### / { srand(FNR+NF+NR+RLENGTH+RSTART); sub( /^### /, "\\subsection subsection" int(rand()*10000) $2 " "); }
+/^### / {
+
+   # some pseudo-random integer + first word
+   $1="" ### 
+   if( $3 == "" )
+   {
+     printf "\\subsection subsection" FNR NF NR RLENGTH RSTART int(1+srand(FNR+NF+NR+RLENGTH+RSTART)*rand()*100);
+   }   
+   else # several words
+   { 
+      print "\\subsection subsection" FNR NF NR RLENGTH RSTART int(1+srand(FNR+NF+NR+RLENGTH+RSTART)*rand()*100) $2 $0;
+      next
+   }
+}
 
 ############################################
 ##                                        ##
