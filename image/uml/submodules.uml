@@ -1,0 +1,24 @@
+rectangle Application {
+
+ !include core.uml
+
+ (Persist) as (persist)
+
+ (core) <|--|> (persist)
+} 
+
+rectangle Framework {
+
+ (Main\n--\nDoc & Stats) as (main)
+ (UI\n--\nPorcelain tools) as (ui)
+ (Base\n--\nPlumbing tools) as (base)
+
+ (base) <..> (main) 
+ (ui) <..> (main) 
+ (ui) <..> (base) 
+}
+
+note "Reuse Framework\non different Apps" as N
+N .. (core) 
+N .. (main) 
+

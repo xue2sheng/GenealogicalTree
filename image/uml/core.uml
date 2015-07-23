@@ -1,0 +1,8 @@
+ !ifdef HIGH_LEVEL_CORE
+   (Core) as (core)
+ !endif
+
+ !ifdef DETAIL_CORE
+  (Core\n--\nC++ plugin for Java utilities\n==\nC++14/boost\nElasticsearch\nKafka) as (core)
+ !endif
+

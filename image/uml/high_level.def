@@ -1,0 +1,5 @@
+!define HIGH_LEVEL_CORE 
+!define HIGH_LEVEL_PERSIST
+!define HIGH_LEVEL_BASE
+!define HIGH_LEVEL_UI 
+!define HIGH_LEVEL_MAIN

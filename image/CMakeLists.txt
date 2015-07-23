@@ -33,11 +33,11 @@ if(APPLE)
 
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
-       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -Dplantuml.include.path=${UML_DIR} -graphvizdot ${DOT} -v -o ${BUILD_IMAGE_DIR})
-       set(METADATA java -jar $ENV{PLANTUMLJAR} -Dplantuml.include.path=${UML_DIR} -graphvizdot ${DOT} -metadata)
+       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -graphvizdot ${DOT} -DUML_DIR=${UML_DIR} -v -o ${BUILD_IMAGE_DIR})
+       set(METADATA java -jar $ENV{PLANTUMLJAR} -graphvizdot ${DOT} -DUML_DIR=${UML_DIR} -metadata)
      else()
-       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -Dplantuml.include.path=${UML_DIR} -graphvizdot ${DOT} -v -o ${BUILD_IMAGE_DIR})
-       set(METADATA java -jar /opt/plantuml/plantuml.jar -Dplantuml.include.path=${UML_DIR} -graphvizdot ${DOT} -metadata)
+       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -graphvizdot ${DOT} -DUML_DIR=${UML_DIR} -v -o ${BUILD_IMAGE_DIR})
+       set(METADATA java -jar /opt/plantuml/plantuml.jar -graphvizdot ${DOT} -DUML_DIR=${UML_DIR} -metadata)
      endif()
 
 elseif(UNIX)
@@ -52,11 +52,11 @@ elseif(UNIX)
 
      ### PlantUML
      if($ENV{PLANTUMLJAR} MATCHES ".*jar$")
-       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -Dplantuml.include.path=${UML_DIR} -graphvizdot ${DOT} -v -o ${BUILD_IMAGE_DIR})
-       set(METADATA java -jar $ENV{PLANTUMLJAR} -Dplantuml.include.path=${UML_DIR} -graphvizdot ${DOT} -metadata)
+       set(PLANTUML java -jar $ENV{PLANTUMLJAR} -graphvizdot ${DOT} -DUML_DIR=${UML_DIR} -v -o ${BUILD_IMAGE_DIR})
+       set(METADATA java -jar $ENV{PLANTUMLJAR} -graphvizdot ${DOT} -DUML_DIR=${UML_DIR} -metadata)
      else()
-       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -Dplantuml.include.path=${UML_DIR} -graphvizdot ${DOT} -v -o ${BUILD_IMAGE_DIR})
-       set(METADATA java -jar /opt/plantuml/plantuml.jar -Dplantuml.include.path=${UML_DIR} -graphvizdot ${DOT} -metadata)
+       set(PLANTUML java -jar /opt/plantuml/plantuml.jar -graphvizdot ${DOT} -DUML_DIR=${UML_DIR} -v -o ${BUILD_IMAGE_DIR})
+       set(METADATA java -jar /opt/plantuml/plantuml.jar -graphvizdot ${DOT} -DUML_DIR=${UML_DIR} -metadata)
      endif()
 
 elseif(WIN32)
@@ -75,15 +75,15 @@ elseif(WIN32)
      else()
       file(TO_CMAKE_PATH "C:/opt/plantuml/plantuml" PLANTUMLJAR_CMAKE)
      endif()
-     set(PLANTUML java -jar ${PLANTUMLJAR_CMAKE} -Dplantuml.include.path=${UML_DIR} -graphvizdot ${DOT} -v -o ${BUILD_IMAGE_DIR})
-     set(METADATA java -jar ${PLANTUMLJAR_CMAKE} -Dplantuml.include.path=${UML_DIR} -graphvizdot ${DOT} -metadata)
- 
+     set(PLANTUML java -jar ${PLANTUMLJAR_CMAKE} -graphvizdot ${DOT} -DUML_DIR=${UML_DIR } -v -o ${BUILD_IMAGE_DIR})
+     set(METADATA java -jar ${PLANTUMLJAR_CMAKE} -graphvizdot ${DOT} -DUML_DIR=${UML_DIR } -metadata)
+
 endif()
 message(STATUS "PLANTUML=${PLANTUML}")
  
 #### invoke PlantUML ####
 execute_process(
-  COMMAND ${PLANTUML} README.md src/*.* optimize/*.* test/*.* template/*.* mock/*.* vagrant/*.*
+  COMMAND ${PLANTUML} README.md core/src/*.* base/*.* doc/*.* template/*.* 
   WORKING_DIRECTORY ${ROOT_DIR} 
 )
 

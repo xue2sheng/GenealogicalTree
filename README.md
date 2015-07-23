@@ -18,20 +18,8 @@ In order to make it easier to mantain all the tasks and let us apply specific to
 
 <!---
 @startuml submodules.png
-rectangle Application {
- (Core) <|--|> (Persist)
-} 
-rectangle Framework {
- (Base\n--\nPlumbing tools) as (base)
- (UI\n--\nPorcelain tools) as (ui)
- (Main\n--\nDocs & Stats) as (main)
- (base) <..> (main) 
- (ui) <..> (main) 
- (ui) <..> (base) 
-}
-note "Reuse Framework\non different Apps" as N
-N .. (Core) 
-N .. (main) 
+!include UML_DIR/high_level.def
+!include UML_DIR/submodules.uml
 @enduml
 --->
 
